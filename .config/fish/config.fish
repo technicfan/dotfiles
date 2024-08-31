@@ -27,16 +27,14 @@ function pull
     set repodir "$HOME/git-repos"
     set -l repos $(ls $repodir)
     for repo in $repos
-        if [ "$repo" != "Deep-Live-Cam" ]
-            echo $repo
-            cd "$repodir/$repo"
-            git pull
-            echo
-            cd -
+        echo $repo
+        cd "$repodir/$repo"
+        git pull
+        echo
+        cd -
         end
     end
 end
-    
 
 alias fishconfig='micro ~/.config/fish/config.fish'
 alias alacrittyconfig='micro ~/.config/alacritty/alacritty.toml'
