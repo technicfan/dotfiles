@@ -32,7 +32,6 @@ function pull
         git pull
         echo
         cd -
-        end
     end
 end
 
