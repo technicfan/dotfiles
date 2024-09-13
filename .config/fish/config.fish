@@ -38,8 +38,6 @@ if status --is-interactive
     alias alacrittyconfig='micro ~/.config/alacritty/alacritty.toml'
     alias menvironment='sudo micro /etc/environment'
 
-    alias edt='micro'
-
     alias in='yay -S'
     alias re='yay -R'
     alias re-f='yay -Rns'
@@ -50,6 +48,7 @@ if status --is-interactive
     alias fin='flatpak install'
     alias fre='flatpak remove'
     alias fse='flatpak search'
+    alias fup='flatpak update'
 
     # git
     alias clone='cd ~/git-repos && git clone'
