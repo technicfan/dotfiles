@@ -7,7 +7,7 @@ then
         localdir="$HOME/.config/$(sed 's/.*\///' <<< "$dir")"
         if [[ -d "$localdir" ]]
         then
-            mv "$localdir" "$localdir.old"
+            mv "$localdir" "$localdir/technicfan-bak"
         fi
         ln -s "$dir" "$localdir"
     done < <(find "$(pwd)" -maxdepth 1 -mindepth 1 -type d)
