@@ -4,10 +4,12 @@ if [[ $(pwd) = *"/dotfiles/.config" ]]
 then
     while read -r dir
     do
-        if ! [[ -d "$HOME/.config/$(sed 's/.*\///' <<< "$dir")" ]]
+        localdir="$HOME/.config/$(sed 's/.*\///' <<< "$dir")"
+        if [[ -d "$localdir" ]]
         then
-            ln -s "$dir" "$HOME/.config/$(sed 's/.*\///' <<< "$dir")"
+            mv "$localdir" "$localdir.old"
         fi
+        ln -s "$dir" "$localdir"
     done < <(find "$(pwd)" -maxdepth 1 -mindepth 1 -type d)
 else
     echo "run in the folder it is located in the repo"

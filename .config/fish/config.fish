@@ -16,7 +16,7 @@ if status --is-interactive
     function up
         yay
         echo
-        flatpak update
+        fup
         echo
         pull
         spicetify upgrade
@@ -48,7 +48,7 @@ if status --is-interactive
     alias fin='flatpak install'
     alias fre='flatpak remove'
     alias fse='flatpak search'
-    alias fup='flatpak update'
+    alias fup='sudo flatpak update'
 
     # git
     alias clone='cd ~/git-repos && git clone'
@@ -82,11 +82,11 @@ if status --is-interactive
     alias startshizuku="adb shell sh /sdcard/Android/data/moe.shizuku.privileged.api/start.sh"
 
     fish_add_path /home/technicfan/.spicetify
-    fish_add_path /opt/lampp
     fish_add_path /home/technicfan/GitHub/l7-dmenu-desktop
     fish_add_path /home/technicfan/.cache/lm-studio/bin
     fish_add_path /home/technicfan/.local/bin
     fish_add_path /home/technicfan/Github/spotifyd/target/release
+    fish_add_path /home/technicfan/.millennium/ext/bin
 
     zoxide init --cmd cd fish | source
     #starship init fish | source
