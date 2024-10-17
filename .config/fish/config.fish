@@ -56,6 +56,9 @@ if status --is-interactive
     # save rm
     alias rm='trash'
 
+    # ls
+    alias ls='lsd'
+
     # bat
     alias cat='bat'
 
