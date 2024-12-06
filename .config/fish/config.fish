@@ -84,6 +84,8 @@ if status --is-interactive
                     else echo \"place the latest microG release as 'gmscore.apk' in current directory\"; fi'"
     alias startshizuku="adb shell sh /sdcard/Android/data/moe.shizuku.privileged.api/start.sh"
 
+    alias secret="openssl rand -base64 48"
+
     fish_add_path /home/technicfan/.spicetify
     fish_add_path /home/technicfan/GitHub/l7-dmenu-desktop
     fish_add_path /home/technicfan/.cache/lm-studio/bin

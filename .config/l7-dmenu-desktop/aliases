@@ -1,5 +1,4 @@
 alias Wolfenstein 3D=dosbox '/mnt/Games/Heroic/Wolfenstein 3D/Wolf3d.exe'
 alias Pamac=pamac-manager
-alias Gimp=gimp
-alias Steam(millennium)=/home/technicfan/.millennium/start.sh
-#alias vector tools=/home/technicfan/GitHub/pyvector_tools/dist/vector_tools_gui
+alias Gimp=flatpak run org.gimp.GIMP
+#alias Steam(millennium)=/home/technicfan/.millennium/start.sh
