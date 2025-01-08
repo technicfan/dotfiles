@@ -4,15 +4,6 @@ if status --is-interactive
     fastfetch
     echo
 
-    function yy
-    	set tmp (mktemp -t "yazi-cwd.XXXXXX")
-    	yazi $argv --cwd-file="$tmp"
-    	if set cwd (cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-    		cd -- "$cwd"
-    	end
-    	rm -f -- "$tmp"
-    end
-
     function up
         yay
         echo
@@ -34,9 +25,21 @@ if status --is-interactive
         end
     end
 
+    function init_ssh
+        if test "$TERM" = "xterm-kitty"
+            alias ssh='kitten ssh'
+        else
+            alias ssh='TERM=xterm-256color /bin/ssh'
+        end
+    end
+
+    init_ssh
+
     alias fishconfig='micro ~/.config/fish/config.fish'
     alias alacrittyconfig='micro ~/.config/alacritty/alacritty.toml'
     alias menvironment='sudo micro /etc/environment'
+
+    alias venv='python -m venv'
 
     alias in='yay -S'
     alias re='yay -R'
@@ -73,9 +76,6 @@ if status --is-interactive
 
     alias venin='sudo vencordinstallercli'
 
-    # fix nano/vim in ssh due to $TERM being alacritty on host
-    alias ssh='TERM=xterm-256color /bin/ssh'
-
     # iso and version used to install ArcoLinux
     alias iso="cat /etc/dev-rel"
 
@@ -88,10 +88,7 @@ if status --is-interactive
 
     fish_add_path /home/technicfan/.spicetify
     fish_add_path /home/technicfan/GitHub/l7-dmenu-desktop
-    fish_add_path /home/technicfan/.cache/lm-studio/bin
-    fish_add_path /home/technicfan/.local/bin
     fish_add_path /home/technicfan/Github/spotifyd/target/release
-    fish_add_path /home/technicfan/.millennium/ext/bin
 
     zoxide init --cmd cd fish | source
     #starship init fish | source
