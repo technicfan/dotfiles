@@ -1,6 +1,8 @@
 return {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    'nvim-telescope/telescope.nvim',
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+    },
     config = function()
         local vimgrep_arguments = { require("telescope.config").values.vimgrep_arguments }
 
@@ -16,7 +18,7 @@ return {
                 find_files = {
                     find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
                 }
-            }
+            },
         })
 
         local builtin = require("telescope.builtin")
