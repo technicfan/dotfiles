@@ -40,7 +40,7 @@ return {
                     pylsp = {
                         plugins = {
                             pycodestyle = {
-                                maxLineLength = nil
+                                maxLineLength = 500
                             }
                         }
                     }
