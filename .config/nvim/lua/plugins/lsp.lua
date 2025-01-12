@@ -9,7 +9,7 @@ return {
         "williamboman/mason-lspconfig.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "lua_ls", "bashls", "clangd", "cssls", "ts_ls", "pylsp",  "html", "jinja_lsp", "pylsp" }
+                ensure_installed = { "lua_ls", "bashls", "clangd", "cssls", "ts_ls", "pylsp",  "html", "pylsp" }
             })
         end
     },
@@ -45,9 +45,6 @@ return {
                         }
                     }
                 }
-            })
-            lspconfig.jinja_lsp.setup({
-                capabilities = capabilities
             })
             lspconfig.html.setup({
                 capabilities = capabilities,
