@@ -25,19 +25,15 @@ if status --is-interactive
         end
     end
 
-    function init_ssh
-        if test "$TERM" = "xterm-kitty"
-            alias ssh='kitten ssh'
-        else
-            alias ssh='TERM=xterm-256color /bin/ssh'
-        end
+    if test "$TERM" = "xterm-kitty"
+        alias ssh='kitten ssh'
+    else
+        alias ssh='TERM=xterm-256color /bin/ssh'
     end
 
-    init_ssh
-
-    alias fishconfig='micro ~/.config/fish/config.fish'
-    alias alacrittyconfig='micro ~/.config/alacritty/alacritty.toml'
-    alias menvironment='sudo micro /etc/environment'
+    alias fishconfig='nvim ~/.config/fish/config.fish'
+    alias alacrittyconfig='nvim ~/.config/alacritty/alacritty.toml'
+    alias menvironment='sudo nvim /etc/environment'
 
     alias venv='python -m venv'
 
