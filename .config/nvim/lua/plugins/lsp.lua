@@ -9,7 +9,7 @@ return {
         "williamboman/mason-lspconfig.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "lua_ls", "bashls", "clangd", "cssls", "ts_ls", "pylsp",  "html", "pylsp" }
+                ensure_installed = { "lua_ls", "bashls", "clangd", "cssls", "ts_ls", "pylsp",  "html", "pylsp", "marksman" }
             })
         end
     },
@@ -49,6 +49,9 @@ return {
             lspconfig.html.setup({
                 capabilities = capabilities,
                 filetypes = { "html", "htmldjango" }
+            })
+            lspconfig.marksman.setup({
+                capabilities = capabilities
             })
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
