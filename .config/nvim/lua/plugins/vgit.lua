@@ -1,8 +1,10 @@
 return {
-    "tanvirtin/vgit.nvim",
+    "tanvirtin/vgit.nvim", -- tag = 'v1.0.x',
     dependencies = {
-        "nvim-lua/plenary.nvim"
+        "nvim-lua/plenary.nvim",
+        -- "nvim-tree/nvim-web-devicons"
     },
+    -- event = 'VimEnter',
     config = function()
         local vgit = require("vgit")
         vgit.setup({
