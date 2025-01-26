@@ -10,4 +10,5 @@ vim.cmd("vnoremap > >gv")
 vim.cmd("vnoremap < <gv")
 vim.cmd("vnoremap <Tab> >gv")
 vim.cmd("vnoremap <S-Tab> <gv")
+vim.cmd("tnoremap <Esc> <C-\\><C-n>")
 vim.g.mapleader = " "
