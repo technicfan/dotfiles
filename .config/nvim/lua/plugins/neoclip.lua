@@ -5,6 +5,6 @@ return {
   },
   config = function()
     require("neoclip").setup()
-    vim.keymap.set("n", "<leader>cc", function () vim.cmd("Telescope neoclip") end)
+    vim.keymap.set("n", "<leader>lc", "<cmd>Telescope neoclip<CR>")
   end,
 }
