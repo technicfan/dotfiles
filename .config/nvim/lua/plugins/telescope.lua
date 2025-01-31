@@ -4,7 +4,7 @@ return {
         'nvim-lua/plenary.nvim',
     },
     config = function()
-        local vimgrep_arguments = { require("telescope.config").values.vimgrep_arguments }
+        local vimgrep_arguments = { unpack(require("telescope.config").values.vimgrep_arguments) }
 
         table.insert(vimgrep_arguments, "--hidden")
         table.insert(vimgrep_arguments, "--glob")

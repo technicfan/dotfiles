@@ -9,12 +9,12 @@ if status --is-interactive
         echo
         fup
         echo
-        pull
+        pull "$HOME/git-repos"
         spicetify upgrade
     end
 
     function pull
-        set repodir "$HOME/git-repos"
+        set repodir "$argv"
         set -l repos $(ls $repodir)
         for repo in $repos
             echo $repo
