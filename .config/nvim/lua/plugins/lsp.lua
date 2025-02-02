@@ -15,7 +15,15 @@ return {
     },
     {
         "neovim/nvim-lspconfig",
-        config = function()
+        dependencies = {
+            "hrsh7th/nvim-cmp"
+        },
+        opts = {
+            servers = {
+                lua_ls = {}
+            }
+        },
+        config = function(_, opts)
             local capabilities = vim.tbl_deep_extend(
                 "force",
                 {},
@@ -23,24 +31,9 @@ return {
                 require('cmp_nvim_lsp').default_capabilities()
             )
 
-            local lspconfig = require('lspconfig')
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.bashls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.clangd.setup({
-                capabilities = capabilities
-            })
-            lspconfig.cssls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.ts_ls.setup({
-                capabilities = capabilities
-            })
+            local lspconfig = require("lspconfig")
+
             lspconfig.pylsp.setup({
-                capabilities = capabilities,
                 settings = {
                     pylsp = {
                         plugins = {
@@ -51,13 +44,15 @@ return {
                     }
                 }
             })
+
             lspconfig.html.setup({
-                capabilities = capabilities,
                 filetypes = { "html", "htmldjango" }
             })
-            lspconfig.marksman.setup({
-                capabilities = capabilities
-            })
+
+            for server, config in pairs(opts.servers) do
+                config.capabilities = capabilities
+                lspconfig[server].setup(config)
+            end
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
