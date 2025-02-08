@@ -1,4 +1,5 @@
 alias Wolfenstein 3D=dosbox '/mnt/Games/Heroic/Wolfenstein 3D/Wolf3d.exe'
 alias Pamac=pamac-manager
 alias Gimp=flatpak run org.gimp.GIMP
+alias Roblox=Sober; desktop
 #alias Steam(millennium)=/home/technicfan/.millennium/start.sh
