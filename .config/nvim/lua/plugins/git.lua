@@ -16,10 +16,8 @@ return {
                 }
             })
             vim.keymap.set("n", "<leader>gp", vgit.project_diff_preview, {})
+            vim.keymap.set("n", "<leader>gl", vgit.project_logs_preview, {})
             vim.keymap.set("n", "<leader>gh", vgit.buffer_hunk_preview, {})
         end
-    },
-    {
-        "tpope/vim-fugitive"
     }
 }

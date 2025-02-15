@@ -38,9 +38,10 @@ return {
                         },
                     },
                 },
+                list = { selection = { preselect = true, auto_insert = false } },
             },
             keymap = { preset = "enter" },
-            sources = { cmdline = {} },
+            cmdline = { enabled = false, sources = {} },
             snippets = { preset = "luasnip" }
         },
     }
