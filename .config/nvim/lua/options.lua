@@ -22,19 +22,19 @@ vim.g.mapleader = " "
 -- neovide
 vim.o.guifont = "VictorMono Nerd Font:h11"
 if vim.g.neovide then
-    vim.g.neovide_padding_top = 4
-    vim.g.neovide_padding_bottom = 4
-    vim.g.neovide_padding_right = 4
-    vim.g.neovide_padding_left = 4
+    vim.g.neovide_padding_top = 13
+    vim.g.neovide_padding_bottom = 6
+    vim.g.neovide_padding_right = 6
+    vim.g.neovide_padding_left = 6
     vim.g.neovide_hide_mouse_when_typing = true
-    vim.g.neovide_cursor_animation_length = 0.05
-    vim.g.neovide_cursor_trail_size = 0.01
-    vim.g.neovide_cursor_animate_command_line = true
+    vim.g.neovide_cursor_animation_length = 0
+    vim.g.neovide_cursor_trail_size = 0
+    vim.g.neovide_cursor_animate_command_line = false
     vim.g.neovide_scroll_animation_length = 0.15
     vim.g.neovide_floating_blur_amount_x = 0
     vim.g.neovide_floating_blur_amount_y = 0
     vim.g.neovide_cursor_unfocused_outline_width = 0.075
-    vim.g.neovide_underline_stroke_scale = 2.5
+    vim.g.neovide_floating_shadow = false
 end
 
 -- kitty

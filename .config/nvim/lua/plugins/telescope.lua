@@ -14,6 +14,7 @@ return {
             require("telescope").setup({
                 defaults = {
                     vimgrep_arguments = vimgrep_arguments,
+                    borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' }
                 },
                 pickers = {
                     find_files = {
