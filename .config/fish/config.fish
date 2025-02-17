@@ -49,6 +49,9 @@ if status --is-interactive
     alias fse='flatpak search'
     alias fup='sudo flatpak update'
 
+    # quit (nvim)
+    alias :q='exit'
+
     # git
     alias clone='cd ~/git-repos && git clone'
 
