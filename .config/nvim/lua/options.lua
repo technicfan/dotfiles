@@ -18,11 +18,12 @@ vim.cmd("inoremap <CS-v> <C-r>+")
 vim.cmd("cnoremap <CS-v> <C-r>+")
 vim.cmd("inoremap <C-r> <C-v>")
 vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>gt", "<cmd>tab term<CR>i")
 
 -- neovide
 vim.o.guifont = "VictorMono Nerd Font:h11"
 if vim.g.neovide then
-    vim.g.neovide_padding_top = 13
+    vim.g.neovide_padding_top = 6
     vim.g.neovide_padding_bottom = 6
     vim.g.neovide_padding_right = 6
     vim.g.neovide_padding_left = 6
