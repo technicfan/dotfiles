@@ -11,7 +11,8 @@ return {
     {
         "williamboman/mason-lspconfig.nvim",
         dependecies = {
-            "saghen/blink.cmp"
+            "saghen/blink.cmp",
+            "neovim/nvim-lspconfig"
         },
         config = function()
             require("mason-lspconfig").setup({

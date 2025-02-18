@@ -11,6 +11,13 @@ return {
             previewer = false,
             mappings = {
                 delete_session = { "i", "<C-D>" }
+            },
+            theme_conf = {
+                borderchars = {
+                    prompt = { '─', '│', ' ', '│', '┌', '┐', '┘', '└' },
+                    results = { "─", "│", "─", "│", "├", "┤", '┘', '└' },
+                    preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+                },
             }
         }
     }

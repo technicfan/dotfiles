@@ -3,7 +3,7 @@ return {
         "m4xshen/smartcolumn.nvim",
         opts = {
             colorcolumn = "128",
-            disabled_filetypes = { "", "help", "text", "markdown", "lazy", "neo-tree", "alpha" }
+            disabled_filetypes = { "", "help", "text", "markdown", "lazy", "neo-tree", "alpha", "mason" }
         }
     },
     {
@@ -26,4 +26,17 @@ return {
             })
         end
     },
+    {
+        "RRethy/vim-illuminate",
+        config = function ()
+            require("illuminate").configure({
+                providers = {
+                    "treesitter"
+                }
+            })
+            vim.cmd('hi IlluminatedWordText gui=underline')
+            vim.cmd('hi IlluminatedWordRead gui=underline')
+            vim.cmd('hi IlluminatedWordWrite gui=underline')
+        end
+    }
 }

@@ -3,6 +3,7 @@ return {
         'nvim-telescope/telescope.nvim',
         dependencies = {
             'nvim-lua/plenary.nvim',
+            "nvim-telescope/telescope-ui-select.nvim"
         },
         config = function()
             local vimgrep_arguments = require("telescope.config").values.vimgrep_arguments
@@ -21,7 +22,20 @@ return {
                         find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
                     }
                 },
+                extensions = {
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown({
+                            borderchars = {
+                                prompt = { '─', '│', ' ', '│', '┌', '┐', '┘', '└' },
+                                results = { "─", "│", "─", "│", "├", "┤", '┘', '└' },
+                                preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+                            },
+                        })
+                    }
+                }
             })
+
+            require("telescope").load_extension("ui-select")
 
             local builtin = require("telescope.builtin")
             vim.keymap.set('n', '<C-p>', builtin.find_files, {})
@@ -29,19 +43,4 @@ return {
             vim.keymap.set("n", "<leader><leader>", builtin.buffers, {})
         end
     },
-    {
-        "nvim-telescope/telescope-ui-select.nvim",
-        config = function()
-            require("telescope").setup({
-                extensions = {
-                    ["ui-select"] = {
-                        require("telescope.themes").get_dropdown {
-                        }
-                    }
-                }
-            })
-            require("telescope").load_extension("ui-select")
-        end
-    }
 }
-
