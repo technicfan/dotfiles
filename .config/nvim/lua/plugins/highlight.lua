@@ -33,24 +33,28 @@ return {
         },
         config = function ()
             require("illuminate").configure({
-                filetypes_denylist = { "", "help", "text", "markdown", "lazy", "neo-tree", "alpha", "mason", "oil" }
+                filetypes_denylist = { "", "help", "text", "markdown", "lazy", "neo-tree", "alpha", "mason", "oil" },
+                should_enable = function (bufnr)
+                    return require("nvim-treesitter.parsers").has_parser(vim.bo.filetype)
+                end,
+                providers = { "treesitter" }
             })
 
             vim.cmd('hi IlluminatedWordText gui=underline')
             vim.cmd('hi IlluminatedWordRead gui=underline')
             vim.cmd('hi IlluminatedWordWrite gui=underline')
 
-            vim.api.nvim_create_autocmd({ "BufRead" }, {
-                callback = function ()
-                    local config = {}
-                    if require("nvim-treesitter.parsers").has_parser(vim.bo.filetype) then
-                        config.providers = { "treesitter" }
-                    else
-                        config.providers = { "regex" }
-                    end
-                    require("illuminate").configure(config)
-                end
-            })
+            -- vim.api.nvim_create_autocmd({ "BufRead" }, {
+            --     callback = function ()
+            --         local config = {}
+            --         if require("nvim-treesitter.parsers").has_parser(vim.bo.filetype) then
+            --             config.providers = { "treesitter" }
+            --         else
+            --             config.providers = { "regex" }
+            --         end
+            --         require("illuminate").configure(config)
+            --     end
+            -- })
         end
     }
 }
