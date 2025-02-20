@@ -27,6 +27,10 @@ return {
         end
     },
     {
-        "aaron-p1/match-visual.nvim",
+        "wurli/visimatch.nvim",
+        opts = {
+            hl_group = "Visual",
+            chars_lower_limit = 1
+        }
     }
 }
