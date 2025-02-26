@@ -48,7 +48,6 @@ return {
                 list = { selection = { preselect = true, auto_insert = false } },
             },
             keymap = { preset = "enter" },
-            cmdline = { enabled = false, sources = {} },
             snippets = { preset = "luasnip" }
         },
     }

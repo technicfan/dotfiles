@@ -42,6 +42,8 @@ return {
             require("gitsigns").setup()
             vim.keymap.set("n", "<leader>hr", "<cmd>Gitsigns reset_hunk<CR>", {})
             vim.keymap.set("n", "<leader>hs", "<cmd>Gitsigns stage_hunk<CR>", {})
+            vim.keymap.set("n", "<leader>hn", "<cmd>Gitsigns nav_hunk next<CR>", {})
+            vim.keymap.set("n", "<leader>hN", "<cmd>Gitsigns nav_hunk prev<CR>", {})
             vim.keymap.set("n", "<leader>ll", "<cmd>Gitsigns toggle_current_line_blame<CR>", {})
             vim.keymap.set("n", "<leader>gs", function ()
                 local status = vim.b.gitsigns_status_dict

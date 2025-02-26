@@ -31,7 +31,7 @@ if vim.g.neovide then
     vim.g.neovide_cursor_animation_length = 0
     vim.g.neovide_cursor_trail_size = 0
     vim.g.neovide_cursor_animate_command_line = false
-    vim.g.neovide_scroll_animation_length = 0.15
+    vim.g.neovide_scroll_animation_length = 0
     vim.g.neovide_floating_blur_amount_x = 0
     vim.g.neovide_floating_blur_amount_y = 0
     vim.g.neovide_cursor_unfocused_outline_width = 0.075
