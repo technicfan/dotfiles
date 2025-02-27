@@ -11,14 +11,12 @@ vim.cmd("vnoremap > >gv")
 vim.cmd("vnoremap < <gv")
 vim.cmd("vnoremap <Tab> >gv")
 vim.cmd("vnoremap <S-Tab> <gv")
-vim.cmd("tnoremap <Esc> <C-\\><C-n>")
 vim.cmd("vmap <CS-c> \"+y")
 vim.cmd("nmap <CS-v> \"+p")
 vim.cmd("inoremap <CS-v> <C-r>+")
 vim.cmd("cnoremap <CS-v> <C-r>+")
 vim.cmd("inoremap <C-r> <C-v>")
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>gt", "<cmd>tab term<CR>i")
 
 -- neovide
 vim.o.guifont = "VictorMono Nerd Font:h11"
