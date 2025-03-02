@@ -1,8 +1,8 @@
 return {
     "voldikss/vim-floaterm",
     config = function ()
-        vim.cmd("let g:floaterm_width=0.95")
-        vim.cmd("let g:floaterm_height=0.95")
+        vim.cmd("let g:floaterm_width=0.75")
+        vim.cmd("let g:floaterm_height=0.75")
         vim.cmd("let g:floaterm_title='term[$1/$2]'")
         vim.cmd("let g:floaterm_titleposition='center'")
         vim.keymap.set({ 't' }, '<C-n>', "<cmd>FloatermNew<cr>", { silent = true })
