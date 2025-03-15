@@ -18,6 +18,12 @@ vim.cmd("cnoremap <CS-v> <C-r>+")
 vim.cmd("inoremap <C-r> <C-v>")
 vim.g.mapleader = " "
 
+vim.filetype.add({
+    pattern = {
+        [".*/templates/.*%.html"] = "htmldjango"
+    }
+})
+
 -- neovide
 vim.o.guifont = "VictorMono Nerd Font:h11"
 if vim.g.neovide then
