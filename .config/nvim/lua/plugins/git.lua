@@ -20,8 +20,6 @@ return {
                 }
             })
 
-            vim.keymap.set("n", "<leader>ga", vgit.project_diff_preview, {})
-            vim.keymap.set("n", "<leader>gc", vgit.project_commit_preview, {})
             vim.keymap.set("n", "<leader>gl", vgit.project_logs_preview, {})
             vim.keymap.set("n", "<leader>hp", vgit.buffer_hunk_preview, {})
             vim.keymap.set("n", "<leader>gh", vgit.buffer_history_preview, {})
@@ -53,6 +51,25 @@ return {
                     require("gitsigns").reset_buffer_index()
                 end
             end)
+        end
+    },
+    {
+        "kdheepak/lazygit.nvim",
+        lazy = true,
+        cmd = {
+            "LazyGit",
+            "LazyGitConfig",
+            "LazyGitCurrentFile",
+            "LazyGitFilter",
+            "LazyGitFilterCurrentFile",
+        },
+        keys = {
+            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+        },
+        config = function ()
+            vim.g.lazygit_floating_window_border_chars = {'┌','─', '┐', '│', '┘','─', '└', '│'}
+            vim.g.lazygit_use_custom_config_file_path = 1
+            vim.g.lazygit_config_file_path = "$HOME/.config/nvim/lazygit/config.yml"
         end
     }
 }
