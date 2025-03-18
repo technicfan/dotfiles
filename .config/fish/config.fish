@@ -17,11 +17,13 @@ if status --is-interactive
         set repodir "$argv"
         set -l repos $(ls $repodir)
         for repo in $repos
-            echo $repo
-            cd "$repodir/$repo"
-            git pull
-            echo
-            cd -
+            if test -d "$repodir/$repo/.git"
+                echo $repo
+                cd "$repodir/$repo"
+                git pull
+                echo
+                cd -
+            end
         end
     end
 
