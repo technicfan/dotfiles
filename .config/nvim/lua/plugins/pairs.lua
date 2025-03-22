@@ -1,8 +1,9 @@
 return {
     {
-        'windwp/nvim-autopairs',
-        event = "InsertEnter",
-        config = true
+        "echasnovski/mini.pairs",
+        config = function ()
+            require("mini.pairs").setup()
+        end
     },
     {
         "windwp/nvim-ts-autotag",
@@ -11,9 +12,13 @@ return {
                 opts = {
                     enable_close = true,
                     enable_rename = true,
-                    enable_close_on_slash = false
+                    enable_close_on_slash = true
                 }
             })
         end
-    }
+    },
+    {
+        'vidocqh/auto-indent.nvim',
+        opts = {}
+    },
 }

@@ -32,5 +32,9 @@ return {
             hl_group = "Visual",
             chars_lower_limit = 1
         }
+    },
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {}
     }
 }

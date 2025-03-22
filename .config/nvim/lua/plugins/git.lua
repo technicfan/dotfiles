@@ -27,14 +27,6 @@ return {
         end
     },
     {
-        "chrisgrieser/nvim-tinygit",
-        dependencies = "stevearc/dressing.nvim",
-        config = function ()
-            require("tinygit").setup()
-            vim.keymap.set("n", "<leader>gp", require("tinygit").push)
-        end
-    },
-    {
         "lewis6991/gitsigns.nvim",
         config = function ()
             require("gitsigns").setup()
@@ -51,25 +43,6 @@ return {
                     require("gitsigns").reset_buffer_index()
                 end
             end)
-        end
-    },
-    {
-        "kdheepak/lazygit.nvim",
-        lazy = true,
-        cmd = {
-            "LazyGit",
-            "LazyGitConfig",
-            "LazyGitCurrentFile",
-            "LazyGitFilter",
-            "LazyGitFilterCurrentFile",
-        },
-        keys = {
-            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-        },
-        config = function ()
-            vim.g.lazygit_floating_window_border_chars = {'┌','─', '┐', '│', '┘','─', '└', '│'}
-            vim.g.lazygit_use_custom_config_file_path = 1
-            vim.g.lazygit_config_file_path = "$HOME/.config/nvim/lazygit/config.yml"
         end
     }
 }

@@ -1,5 +1,13 @@
 return {
     {
+        "nvim-treesitter/nvim-treesitter-context",
+        config = function ()
+            require("treesitter-context").setup({
+                mode = "topline"
+            })
+        end
+    },
+    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
