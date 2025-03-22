@@ -22,7 +22,6 @@ return {
                     "clangd",
                     "cssls",
                     "ts_ls",
-                    "pylsp",
                     "html",
                     "pylsp",
                     "marksman"

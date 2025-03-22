@@ -6,6 +6,12 @@ return {
         end
     },
     {
+        "echasnovski/mini.surround",
+        config = function ()
+            require("mini.surround").setup()
+        end
+    },
+    {
         "windwp/nvim-ts-autotag",
         config = function ()
             require("nvim-ts-autotag").setup({
