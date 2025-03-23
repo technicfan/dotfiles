@@ -6,26 +6,26 @@ return {
             disabled_filetypes = { "", "help", "text", "markdown", "lazy", "neo-tree", "alpha", "mason", "oil" }
         }
     },
-    {
-        "shellRaining/hlchunk.nvim",
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            require("hlchunk").setup({
-                chunk = {
-                    enable = true,
-                    style = { "#928374" ,"#ea6962" },
-                    chars = {
-                        left_top = "┌",
-                        left_bottom = "└",
-                        right_arrow = "─"
-                    },
-                    duration = 0,
-                    delay = 0,
-                },
-                indent = { enable = true }
-            })
-        end
-    },
+    -- {
+    --     "shellRaining/hlchunk.nvim",
+    --     event = { "BufReadPre", "BufNewFile" },
+    --     config = function()
+    --         require("hlchunk").setup({
+    --             chunk = {
+    --                 enable = true,
+    --                 style = { "#928374" ,"#ea6962" },
+    --                 chars = {
+    --                     left_top = "┌",
+    --                     left_bottom = "└",
+    --                     right_arrow = "─"
+    --                 },
+    --                 duration = 0,
+    --                 delay = 0,
+    --             },
+    --             indent = { enable = true }
+    --         })
+    --     end
+    -- },
     {
         "wurli/visimatch.nvim",
         opts = {
