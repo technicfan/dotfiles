@@ -19,7 +19,7 @@ return {
         },
         config = function()
             require("neoclip").setup()
-            vim.keymap.set("n", "<leader>lc", "<cmd>Telescope neoclip<CR>")
+            vim.keymap.set("n", "<leader>lc", "<cmd>Telescope neoclip<CR>", { desc = "Clipboard manager" })
         end
     }
 }

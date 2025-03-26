@@ -49,10 +49,10 @@ return {
                 end
             })
 
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-            vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, {})
-            vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, {})
-            vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Lsp hover" })
+            vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, { desc = "Lsp to definition" })
+            vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Lsp rename" })
+            vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Lsp code action" })
         end
     }
 }

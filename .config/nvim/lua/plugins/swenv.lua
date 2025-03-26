@@ -9,6 +9,6 @@ return {
                 end
             end
         })
-        vim.keymap.set("n", "<leader>lv", require("swenv.api").pick_venv)
+        vim.keymap.set("n", "<leader>lv", require("swenv.api").pick_venv, { desc = "Python venv" })
     end
 }
