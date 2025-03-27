@@ -17,6 +17,7 @@ vim.cmd("inoremap <CS-v> <C-r>+")
 vim.cmd("cnoremap <CS-v> <C-r>+")
 vim.cmd("inoremap <C-r> <C-v>")
 vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 vim.filetype.add({
     pattern = {
