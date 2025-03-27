@@ -3,7 +3,7 @@ return {
         "m4xshen/smartcolumn.nvim",
         opts = {
             colorcolumn = "128",
-            disabled_filetypes = { "", "help", "text", "markdown", "lazy", "neo-tree", "alpha", "mason", "oil" }
+            disabled_filetypes = { "", "help", "text", "markdown", "lazy", "neo-tree", "mason", "oil", "snacks_dashboard" }
         }
     },
     {
