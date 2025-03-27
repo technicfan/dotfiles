@@ -49,6 +49,11 @@ return {
                 end
             })
 
+            vim.diagnostic.config({
+                virtual_text = false
+            })
+
+            vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
             vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Lsp hover" })
             vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, { desc = "Lsp to definition" })
             vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Lsp rename" })

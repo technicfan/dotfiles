@@ -14,6 +14,13 @@ return {
         },
         notifier = {
             enabled = true,
+            icons = {
+                error = "",
+                warn = "",
+                info = "",
+                debug = "",
+                trace = ""
+            }
         },
         styles = {
             notification = {
