@@ -24,6 +24,16 @@ return {
                 },
                 position = { row = "35%", col = "50%" }
             },
+        },
+        cmdline = {
+            format = {
+                search_down = {
+                    view = "cmdline",
+                },
+                search_up = {
+                    view = "cmdline",
+                },
+            },
         }
     }
 }
