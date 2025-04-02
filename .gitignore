@@ -2,3 +2,6 @@ lazy-lock.json
 .luarc.json
 *\.~*
 aw-watcher.lua
+app.lock
+app.log
+fish_prompt.fish
