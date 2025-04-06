@@ -1,14 +1,7 @@
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=4")
-vim.cmd("set softtabstop=4")
-vim.cmd("set shiftwidth=4")
-vim.cmd("set number")
--- vim.cmd("set relativenumber")
 vim.cmd("noremap <Up> <Nop>")
 vim.cmd("noremap <Down> <Nop>")
 vim.cmd("noremap <Left> <Nop>")
 vim.cmd("noremap <Right> <Nop>")
-vim.cmd("set autoread")
 vim.cmd("nnoremap ß $")
 vim.cmd("nnoremap X vX")
 vim.cmd("vnoremap ß $")
@@ -22,8 +15,17 @@ vim.cmd("nmap <CS-v> \"+p")
 vim.cmd("inoremap <CS-v> <C-r>+")
 vim.cmd("cnoremap <CS-v> <C-r>+")
 vim.cmd("inoremap <C-r> <C-v>")
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.autoread = true
+vim.opt.number = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 vim.filetype.add({
     pattern = {
