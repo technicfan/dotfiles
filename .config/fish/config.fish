@@ -33,6 +33,7 @@ if status --is-interactive
         alias ssh='TERM=xterm-256color /bin/ssh'
     end
 
+    alias v='nvim'
     alias fishconfig='nvim ~/.config/fish/config.fish'
     alias alacrittyconfig='nvim ~/.config/alacritty/alacritty.toml'
     alias menvironment='sudo nvim /etc/environment'

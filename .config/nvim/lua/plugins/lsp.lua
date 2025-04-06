@@ -40,6 +40,12 @@ return {
                                 plugins = {
                                     pycodestyle = {
                                         maxLineLength = 128
+                                    },
+                                    pyls_mypy = {
+                                        enabled = true
+                                    },
+                                    pyls_isort = {
+                                        enabled = true
                                     }
                                 }
                             }
@@ -50,7 +56,7 @@ return {
             })
 
             vim.diagnostic.config({
-                virtual_text = false
+                virtual_text = true
             })
 
             vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
