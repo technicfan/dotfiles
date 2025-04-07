@@ -39,7 +39,7 @@ return {
                             pylsp = {
                                 plugins = {
                                     pycodestyle = {
-                                        maxLineLength = 128
+                                        maxLineLength = 1000
                                     },
                                     pyls_mypy = {
                                         enabled = true

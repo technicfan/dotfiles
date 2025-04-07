@@ -23,7 +23,7 @@ return {
         end
     },
     {
-        'vidocqh/auto-indent.nvim',
+        "vidocqh/auto-indent.nvim",
         opts = {}
     }
 }
