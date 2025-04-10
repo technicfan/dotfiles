@@ -15,6 +15,11 @@ vim.cmd("nmap <CS-v> \"+p")
 vim.cmd("inoremap <CS-v> <C-r>+")
 vim.cmd("cnoremap <CS-v> <C-r>+")
 vim.cmd("inoremap <C-r> <C-v>")
+vim.g.mapleader = " "
+vim.api.nvim_set_keymap("n", "<S-Tab>", "<cmd>bp<cr>", { desc = "Last buffer" })
+vim.api.nvim_set_keymap("n", "<Tab>", "<cmd>bn<cr>", { desc = "Next buffer" })
+vim.api.nvim_set_keymap("n", "<leader>bq", "<cmd>bd<cr>", { desc = "Delete buffer" })
+vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.splitbelow = true
@@ -25,7 +30,6 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
-vim.g.mapleader = " "
 
 vim.filetype.add({
     pattern = {

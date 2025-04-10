@@ -20,20 +20,9 @@ return {
                         "diff",
                         "diagnostics"
                     },
-                    lualine_c = {},
-                    lualine_x = { "encoding", "o:fileformat", "filetype" },
+                    lualine_x = { "encoding", "o:fileformat", "filetype" }
                 }
             })
-        end
-    },
-    {
-        "echasnovski/mini.tabline",
-        config = function ()
-            require("mini.tabline").setup()
-            vim.keymap.set("n", "<S-Tab>", "<cmd>bp<cr>", { desc = "Last buffer" })
-            vim.keymap.set("n", "<Tab>", "<cmd>bn<cr>", { desc = "Next buffer" })
-            vim.keymap.set("n", "<leader>bq", "<cmd>bd<cr>", { desc = "Delete buffer" })
-            vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
         end
     }
 }

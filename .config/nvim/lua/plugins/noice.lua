@@ -32,8 +32,8 @@ return {
                 },
                 search_up = {
                     view = "cmdline",
-                },
-            },
+                }
+            }
         }
     }
 }
