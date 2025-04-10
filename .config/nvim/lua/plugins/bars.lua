@@ -12,7 +12,15 @@ return {
                     lualine_b = {
                         "branch",
                         {
-                            "swenv",
+                            icon = "",
+                            function ()
+                                local venv = require("venv-selector").venv()
+                                if venv then
+                                    return string.gsub(venv, ".*/", "")
+                                else
+                                    return ""
+                                end
+                            end,
                             cond = function()
                                 return vim.bo.filetype == "python"
                             end
@@ -20,7 +28,12 @@ return {
                         "diff",
                         "diagnostics"
                     },
-                    lualine_x = { "encoding", "o:fileformat", "filetype" }
+                    lualine_x = {
+                        "encoding",
+                        "o:fileformat",
+                        "filetype",
+
+                    }
                 }
             })
         end

@@ -23,7 +23,7 @@ return {
                     "cssls",
                     "ts_ls",
                     "html",
-                    "pylsp",
+                    "pyright",
                     "marksman"
                 }
             })
@@ -34,22 +34,6 @@ return {
                     config.capabilities = require("blink.cmp").get_lsp_capabilities()
                     if server == "html" then
                         config.filetypes = { "html", "htmldjango" }
-                    elseif server == "pylsp" then
-                        config.settings = {
-                            pylsp = {
-                                plugins = {
-                                    pycodestyle = {
-                                        maxLineLength = 1000
-                                    },
-                                    pyls_mypy = {
-                                        enabled = true
-                                    },
-                                    pyls_isort = {
-                                        enabled = true
-                                    }
-                                }
-                            }
-                        }
                     end
                     require("lspconfig")[server].setup(config)
                 end
