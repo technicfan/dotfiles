@@ -1,26 +1,14 @@
 return {
     {
-        "rmagatti/auto-session",
+        "olimorris/persisted.nvim",
         lazy = false,
         keys = {
-            { "<leader>ls", "<cmd>SessionSearch<CR>", desc = "Session search" },
+            { "<leader>ls", "<cmd>SessionSelect<CR>", desc = "Session search" },
         },
-        opts = {
-            allowed_dirs = { "~/git-repos/*", "~/GitHub/*" },
-            session_lens = {
-                load_on_setup = true,
-                previewer = false,
-                mappings = {
-                    delete_session = { "i", "<C-D>" }
-                },
-                theme_conf = {
-                    borderchars = {
-                        prompt = { "─", "│", " ", "│", "┌", "┐", "┘", "└" },
-                        results = { "─", "│", "─", "│", "├", "┤", '┘', '└' },
-                        preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                    },
-                }
-            }
+        opts ={
+            use_git_branch = true,
+            autoload = true,
+            allowed_dirs = { "~/git-repos", "~/GitHub" }
         }
     },
     {
