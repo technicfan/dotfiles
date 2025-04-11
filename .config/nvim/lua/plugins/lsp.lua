@@ -60,14 +60,17 @@ return {
         config = function()
             require('mason-null-ls').setup {
                 ensure_installed = {
-                    "ruff"
+                    "ruff",
+                    "prettier",
                 },
                 automatic_installation = true
             }
 
             local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+            local formatting = require("null-ls").builtins.formatting
             require("null-ls").setup({
                 sources = {
+                    formatting.prettier,
                     require("none-ls.formatting.ruff").with { extra_args = { "--extend-select", "I" } },
                     require("none-ls.formatting.ruff_format")
                 },
