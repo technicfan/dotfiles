@@ -2,5 +2,5 @@ alias Wolfenstein 3D=dosbox '/mnt/Games/Heroic/Wolfenstein 3D/Wolf3d.exe'
 alias Pamac=pamac-manager
 alias Gimp=gimp
 alias Roblox=Sober; desktop
-alias Minecraft Bedrock=mcpelauncher-client -dg "$(find ~/.local/share/mcpelauncher/versions -maxdepth 1 -mindepth 1 -type d | sort -r | awk NR==1)"
+alias Minecraft Bedrock=keyd-application-mapper -d && mcpelauncher-client -dg "$(find ~/.local/share/mcpelauncher/versions -maxdepth 1 -mindepth 1 -type d | sort -r | awk NR==1)"
 #alias Steam(millennium)=/home/technicfan/.millennium/start.sh

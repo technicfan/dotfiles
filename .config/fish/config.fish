@@ -86,6 +86,8 @@ if status --is-interactive
                     else echo \"place the latest microG release as 'gmscore.apk' in current directory\"; fi'"
     alias startshizuku="adb shell sh /sdcard/Android/data/moe.shizuku.privileged.api/start.sh"
 
+    alias spicetify_perms='sudo chmod a+wr /var/lib/flatpak/app/com.spotify.Client/x86_64/stable/active/files/extra/share/spotify && sudo chmod a+wr -R /var/lib/flatpak/app/com.spotify.Client/x86_64/stable/active/files/extra/share/spotify/Apps'
+
     alias secret="openssl rand -base64 48"
 
     fish_add_path /home/technicfan/.spicetify
