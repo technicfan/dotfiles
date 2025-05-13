@@ -16,15 +16,13 @@ if status --is-interactive
     function pull
         set repodir "$argv"
         set -l repos $(ls $repodir)
+        set -l output
         for repo in $repos
             if test -d "$repodir/$repo/.git"
-                echo $repo
-                cd "$repodir/$repo"
-                git pull
-                echo
-                cd -
+                set -a output "$repo" $(git -C "$repodir/$repo" pull &)
             end
         end
+        echo $output
     end
 
     if test "$TERM" = "xterm-kitty"
@@ -90,9 +88,12 @@ if status --is-interactive
 
     alias secret="openssl rand -base64 48"
 
+    alias tlmgr="sudo /usr/local/texlive/2025/bin/x86_64-linux/tlmgr"
+
     fish_add_path /home/technicfan/.spicetify
     fish_add_path /home/technicfan/GitHub/l7-dmenu-desktop
     fish_add_path /home/technicfan/Github/spotifyd/target/release
+    fish_add_path /usr/local/texlive/2025/bin/x86_64-linux/
 
     zoxide init --cmd cd fish | source
     #starship init fish | source

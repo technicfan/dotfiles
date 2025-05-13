@@ -18,6 +18,26 @@ return {
         opts = {}
     },
     {
+        'Thiago4532/mdmath.nvim',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        },
+        opts = {
+            filetypes = {"markdown", "plaintex", "tex"},
+        }
+    },
+    {
+      "lervag/vimtex",
+      lazy = false,
+      init = function()
+        vim.g.vimtex_view_method = "mupdf"
+        vim.g.vimtex_compiler_latexmk = {
+            aux_dir = vim.fn.expand("~/.vimtex"),
+            out_dir = vim.fn.expand("~/.vimtex")
+        }
+      end
+    },
+    {
         "sontungexpt/url-open",
         event = "VeryLazy",
         cmd = "URLOpenUnderCursor",

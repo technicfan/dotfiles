@@ -9,7 +9,7 @@ return {
         "neovim/nvim-lspconfig"
     },
     {
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason-lspconfig.nvim",
         dependencies = {
             "saghen/blink.cmp",
             "neovim/nvim-lspconfig"
@@ -24,21 +24,18 @@ return {
                     "ts_ls",
                     "html",
                     "pyright",
-                    "marksman"
+                    "marksman",
+                    "texlab"
                 }
             })
 
-            require("mason-lspconfig").setup_handlers({
-                function(server)
-                    local config = {}
-                    config.capabilities = require("blink.cmp").get_lsp_capabilities()
-                    if server == "html" then
-                        config.filetypes = { "html", "htmldjango" }
-                    end
-                    require("lspconfig")[server].setup(config)
-                end
+            local capabilities = require("blink.cmp").get_lsp_capabilities()
+            vim.lsp.config("*", {
+                capabilities = capabilities
             })
-
+            vim.lsp.config("html", {
+                filetypes  = { "html", "htmldjango" }
+            })
             vim.diagnostic.config({
                 virtual_text = true
             })

@@ -16,6 +16,7 @@ vim.cmd("inoremap <CS-v> <C-r>+")
 vim.cmd("cnoremap <CS-v> <C-r>+")
 vim.cmd("inoremap <C-r> <C-v>")
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 vim.api.nvim_set_keymap("n", "<S-Tab>", "<cmd>bp<cr>", { desc = "Last buffer" })
 vim.api.nvim_set_keymap("n", "<Tab>", "<cmd>bn<cr>", { desc = "Next buffer" })
 vim.api.nvim_set_keymap("n", "<leader>bq", "<cmd>bd<cr>", { desc = "Delete buffer" })
