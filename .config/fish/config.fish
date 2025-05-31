@@ -10,19 +10,31 @@ if status --is-interactive
         fup
         echo
         pull "$HOME/git-repos"
+        echo
         spicetify upgrade
     end
 
     function pull
+        echo Aktualisiere Git-Repositories ...
         set repodir "$argv"
         set -l repos $(ls $repodir)
-        set -l output
+        set -l args
         for repo in $repos
             if test -d "$repodir/$repo/.git"
-                set -a output "$repo" $(git -C "$repodir/$repo" pull &)
+                set -a args "$repodir/$repo"
             end
         end
-        echo $output
+        parallel '
+            function git_pull;
+                cd "$argv";
+                git fetch 2>/dev/null;
+                if [ "$(git rev-parse @)" != "$(git rev-parse @{u})" ];
+                    set output "$(echo $argv | sed "s/^.*\///" && git pull 2>/dev/null || return)";
+                    echo \n$output;
+                end;
+            end;
+            git_pull {};
+        ' ::: $args
     end
 
     if test "$TERM" = "xterm-kitty"
@@ -94,6 +106,8 @@ if status --is-interactive
     fish_add_path /home/technicfan/GitHub/l7-dmenu-desktop
     fish_add_path /home/technicfan/Github/spotifyd/target/release
     fish_add_path /usr/local/texlive/2025/bin/x86_64-linux/
+
+    set -gx SSH_AUTH_SOCK $HOME/.bitwarden-ssh-agent.sock
 
     zoxide init --cmd cd fish | source
     #starship init fish | source
