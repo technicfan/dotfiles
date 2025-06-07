@@ -29,7 +29,7 @@ if status --is-interactive
                 cd "$argv";
                 git fetch 2>/dev/null;
                 if [ "$(git rev-parse @)" != "$(git rev-parse @{u})" ];
-                    set output "$(echo $argv | sed "s/^.*\///" && git pull 2>/dev/null || return)";
+                    set output "$(echo $argv | sed "s/^.*\///" && git -c color.ui=always pull 2>/dev/null || return)";
                     echo \n$output;
                 end;
             end;

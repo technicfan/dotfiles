@@ -67,7 +67,7 @@ return {
             local formatting = require("null-ls").builtins.formatting
             require("null-ls").setup({
                 sources = {
-                    formatting.prettier,
+                    formatting.prettier.with { extra_args = { "--tab-width", "4" } },
                     require("none-ls.formatting.ruff").with { extra_args = { "--extend-select", "I" } },
                     require("none-ls.formatting.ruff_format")
                 },
