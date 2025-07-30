@@ -25,7 +25,8 @@ return {
                     "html",
                     "pyright",
                     "marksman",
-                    "texlab"
+                    "texlab",
+                    "jdtls"
                 }
             })
 
@@ -58,7 +59,7 @@ return {
             require('mason-null-ls').setup {
                 ensure_installed = {
                     "ruff",
-                    "prettier",
+                    "prettier"
                 },
                 automatic_installation = true
             }
