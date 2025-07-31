@@ -33,7 +33,7 @@
     origin = top-right
 
     # Offset from the origin
-    offset = 0x25
+    offset = (0, 25)
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -79,7 +79,7 @@
     # notifications.
     # Set to 0 to disable.
     # If gap_size is greater than 0, this setting will be ignored.
-    separator_height = 2
+    separator_height = 1
 
     # Padding between text and separator.
     padding = 8
