@@ -7,3 +7,4 @@ alias Vintage Story (Unstable)=/mnt/Games/games/Vintagestory/Vintagestory
 alias Steam=steam -system-composer
 alias Nautilus=nautilus
 #alias Steam(millennium)=/home/technicfan/.millennium/start.sh
+alias Norisk Client=prismlauncher --launch "Reimagined"

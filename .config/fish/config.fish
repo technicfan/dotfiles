@@ -60,6 +60,7 @@ if status --is-interactive
     alias fin='flatpak install'
     alias fre='flatpak remove'
     alias fse='flatpak search'
+    alias fli='flatpak list'
     alias fup='sudo flatpak update'
 
     # quit (nvim)
@@ -108,6 +109,7 @@ if status --is-interactive
     fish_add_path /usr/local/texlive/2025/bin/x86_64-linux/
 
     set -gx SSH_AUTH_SOCK $HOME/.bitwarden-ssh-agent.sock
+    # set -gx SSH_AUTH_SOCK $HOME/.goldwarden-ssh-agent.sock
 
     zoxide init --cmd cd fish | source
     #starship init fish | source

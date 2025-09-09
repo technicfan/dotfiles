@@ -5,7 +5,6 @@ return {
             "neovim/nvim-lspconfig",
         },
         lazy = false,
-        branch = "regexp",
         keys = {
             { "<leader>lv", "<cmd>VenvSelect<cr>" },
         },
