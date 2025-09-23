@@ -78,6 +78,9 @@ if status --is-interactive
     # bat
     alias cat='bat'
 
+    # nvme temp
+    alias nvme_temp='sudo nvme smart-log /dev/ng0n1 | grep -e "^.emperature" | awk -F ": " \'{ print $2 }\' | awk \'{ print $1" "$2 }\''
+
     # figlet (always forgetting name)
     alias asciiart='figlet'
 
