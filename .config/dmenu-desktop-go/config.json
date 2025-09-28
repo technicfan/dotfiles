@@ -1,0 +1,39 @@
+{
+    "menu_command": "dmenu -i -p Run:",
+    "terminal_command": "kitty",
+    "aliases": {
+        "Steam": {
+            "command": "steam -system-composer",
+            "is_desktop": false
+        },
+        "Nautilus": {
+            "command": "nautilus",
+            "is_desktop": false
+        },
+        "Minecraft": {
+            "command": "/home/technicfan/Nextcloud/technicfan/Nextcloud/Linux/scripts/prism.sh",
+            "is_desktop": false
+        },
+        "Roblox": {
+            "command": "Sober",
+            "is_desktop": true
+        },
+        "Wolfenstein 3D": {
+            "command": "dosbox \"/mnt/Games/Heroic/Wolfenstein 3D/Wolf3d.exe\"",
+            "is_desktop": false
+        },
+        "Pamac": {
+            "command": "pamac-manager",
+            "is_desktop": false
+        },
+        "Gimp": {
+            "command": "gimp",
+            "is_desktop": false
+        },
+        "Vintage Story (Unstable)": {
+            "command": "/mnt/Games/games/Vintagestory/Vintagestory",
+            "is_desktop": false
+        }
+    },
+    "excludes": []
+}
