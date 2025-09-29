@@ -46,7 +46,7 @@ if status --is-interactive
     alias v='nvim'
     alias fishconfig='nvim ~/.config/fish/config.fish'
     alias alacrittyconfig='nvim ~/.config/alacritty/alacritty.toml'
-    alias menvironment='sudo nvim /etc/environment'
+    alias menvironment='sudoedit /etc/environment'
 
     alias venv='python -m venv'
 
