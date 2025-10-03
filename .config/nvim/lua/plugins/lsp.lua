@@ -25,8 +25,8 @@ return {
                     "html",
                     "pyright",
                     "marksman",
-                    "texlab",
-                    "jdtls"
+                    "jdtls",
+                    "tinymist"
                 }
             })
 
