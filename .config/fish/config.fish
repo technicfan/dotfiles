@@ -37,10 +37,24 @@ if status --is-interactive
         ' ::: $args
     end
 
-    if test "$TERM" = "xterm-kitty"
-        alias ssh='kitten ssh'
-    else
-        alias ssh='TERM=xterm-256color /bin/ssh'
+    function ssh
+        set host $(grep "host" ~/.config/fish/ssh-config | sed 's/host=//')
+        set name $(grep "name" ~/.config/fish/ssh-config | sed 's/name=//')
+        set user $(grep "user" ~/.config/fish/ssh-config | sed 's/user=//')
+        set id_file $(grep "id_file" ~/.config/fish/ssh-config | sed 's/id_file=//')
+        if test "$TERM" = "xterm-kitty"
+            set command 'kitten ssh'
+        else
+            set command 'TERM=xterm-256color /bin/ssh'
+        end
+        if string match -q "$name*" = $argv
+            set number $(echo "$argv" | sed "s/$name//")
+        end
+        if string match -q "$name*" = $argv
+            eval $command -i "$id_file" "$user@$name$number.$host"
+        else
+            eval $command $argv
+        end
     end
 
     alias v='nvim'
