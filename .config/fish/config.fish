@@ -42,6 +42,7 @@ if status --is-interactive
         set name $(grep "name" ~/.config/fish/ssh-config | sed 's/name=//')
         set user $(grep "user" ~/.config/fish/ssh-config | sed 's/user=//')
         set id_file $(grep "id_file" ~/.config/fish/ssh-config | sed 's/id_file=//')
+        set forward_agent $(grep "forward_agent" ~/.config/fish/ssh-config | sed 's/forward_agent=//')
         if test "$TERM" = "xterm-kitty"
             set command 'kitten ssh'
         else
@@ -51,7 +52,11 @@ if status --is-interactive
             set number $(echo "$argv" | sed "s/$name//")
         end
         if string match -q "$name*" = $argv
-            eval $command -i "$id_file" "$user@$name$number.$host"
+            if string match -q "true" = "$forward_agent"
+                eval $command -A -i "$id_file" "$user@$name$number.$host"
+            else
+                eval $command -i "$id_file" "$user@$name$number.$host"
+            end
         else
             eval $command $argv
         end
