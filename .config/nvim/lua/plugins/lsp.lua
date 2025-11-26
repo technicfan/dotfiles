@@ -35,7 +35,18 @@ return {
                 capabilities = capabilities
             })
             vim.lsp.config("html", {
-                filetypes  = { "html", "htmldjango" }
+                filetypes = { "html", "htmldjango" }
+            })
+            vim.lsp.config("jdtls", {
+                settings = {
+                    java = {
+                        project = {
+                            referencedLibraries = {
+                                "lib/**/*.jar",
+                            }
+                        }
+                    }
+                }
             })
             vim.diagnostic.config({
                 virtual_text = true

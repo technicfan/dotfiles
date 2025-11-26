@@ -96,12 +96,15 @@ if status --is-interactive
 
     # bat
     alias cat='bat'
+    alias bcat='/bin/cat'
 
     # nvme temp
     alias nvme_temp='sudo nvme smart-log /dev/ng0n1 | grep -e "^.emperature" | awk -F ": " \'{ print $2 }\' | awk \'{ print $1" "$2 }\''
 
     # figlet (always forgetting name)
     alias asciiart='figlet'
+
+    alias wl-mon='kanshi'
 
     alias bg-f='feh --bg-fill'
 
