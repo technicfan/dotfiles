@@ -17,6 +17,7 @@ listview {
 
 entry {
     blink: false;
+    cursor-width: 1px;
     margin: 0 0 0 6px;
 }
 
