@@ -17,6 +17,7 @@ listview {
 
 entry {
     blink: false;
+    margin: 0 0 0 6px;
 }
 
 element selected {
