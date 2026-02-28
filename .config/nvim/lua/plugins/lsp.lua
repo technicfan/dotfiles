@@ -37,19 +37,46 @@ return {
             vim.lsp.config("html", {
                 filetypes = { "html", "htmldjango" }
             })
-            vim.lsp.config("jdtls", {
-                settings = {
-                    java = {
-                        project = {
-                            referencedLibraries = {
-                                "lib/**/*.jar",
-                            }
-                        }
-                    }
-                }
-            })
+            -- vim.lsp.config("jdtls", {
+            --     settings = {
+            --         java = {
+            --             project = {
+            --                 referencedLibraries = {
+            --                     "lib/**/*.jar",
+            --                 }
+            --             }
+            --         }
+            --     }
+            -- })
+            vim.lsp.enable("jdtls", false)
             vim.diagnostic.config({
                 virtual_text = true
+            })
+
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "java",
+                callback = function()
+                    require("jdtls").start_or_attach({
+                        cmd = { "jdtls" },
+                        root_dir = require("jdtls.setup").find_root({
+                            ".project",
+                            ".classpath",
+                            "pom.xml",
+                            "build.gradle",
+                            ".git",
+                        }),
+                        settings = {
+                            java = {
+                                project = {
+                                    referencedLibraries = {
+                                        "lib/**/*.jar",
+                                    }
+                                }
+                            }
+                        },
+                        capabilities = capabilities
+                    })
+                end,
             })
 
             vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show line diagnostics" })

@@ -1,5 +1,5 @@
 {
-    "menu_command": "dmenu -i -p Run:",
+    "menu_command": "rofi -dmenu -i -p Run:",
     "terminal_command": "kitty",
     "aliases": {
         "Steam": {
@@ -32,6 +32,10 @@
         },
         "Vintage Story (Unstable)": {
             "command": "/mnt/Games/games/Vintagestory/Vintagestory",
+            "is_desktop": false
+        },
+        "Prism Launcher": {
+            "command": "prismlauncher",
             "is_desktop": false
         }
     },

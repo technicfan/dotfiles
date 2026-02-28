@@ -1,6 +1,9 @@
 return {
-    "chomosuke/typst-preview.nvim",
+    "al-kot/typst-preview.nvim",
     ft = "typst",
-    version = "1.*",
     opts = {},
+    keys = {
+        {"<leader>sp", "<cmd>TypstPreviewStart<cr>", desc="Start typst preview"},
+        {"<leader>ss", "<cmd>TypstPreviewStop<cr>", desc="Stop typst preview"},
+    },
 }

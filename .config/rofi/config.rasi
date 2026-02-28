@@ -1,0 +1,34 @@
+@theme "dmenu"
+ 
+* {
+    background-color: #282828;
+    text-transform: lowercase;
+    font: "Terminus 12";
+}
+
+window {
+    padding: 5px 5px 4px 5px;
+}
+
+listview {
+    cycle: false;
+    margin: 0px 0px 0px 444px;
+}
+
+entry {
+    blink: false;
+}
+
+element selected {
+    background-color: None;
+}
+
+element-text, entry, prompt {
+    text-color: #d3869b;
+    highlight: #dfbf8e;
+}
+
+element-text selected.normal {
+    text-color: #a9b665;
+    highlight: #e78a4e;
+}
