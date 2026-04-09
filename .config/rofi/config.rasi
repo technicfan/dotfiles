@@ -1,3 +1,8 @@
+configuration {
+    sort: true;
+    sorting-method: "fzf";
+}
+
 @theme "dmenu"
  
 * {
@@ -10,8 +15,23 @@ window {
     padding: 6px 5px 3px 5px;
 }
 
+horibox {
+    orientation: horizontal;
+    children: [ prompt, entry, listview, num-filtered-rows, textbox-num-sep, num-rows ];
+}
+
+textbox-num-sep {
+    expand: false;
+    str: "/";
+}
+
+num-rows {
+    padding: 0 3px 0 0;
+}
+
 listview {
     cycle: false;
+    spacing: 8px;
     margin: 0px 0px 0px 444px;
 }
 
@@ -25,7 +45,7 @@ element selected {
     background-color: None;
 }
 
-element-text, entry, prompt {
+element-text, entry, prompt, num-filtered-rows, textbox-num-sep, num-rows {
     text-color: #d3869b;
     highlight: #dfbf8e;
 }
