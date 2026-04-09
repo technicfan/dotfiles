@@ -38,6 +38,9 @@ vim.filetype.add({
     }
 })
 
+-- disable message from none-ls
+vim.deprecate = function() end
+
 -- neovide
 vim.o.guifont = "VictorMono Nerd Font:h11"
 if vim.g.neovide then
