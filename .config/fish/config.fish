@@ -1,3 +1,12 @@
+bind alt-backspace backward-kill-token
+bind ctrl-backspace backward-kill-word
+bind alt-delete kill-token
+bind ctrl-delete kill-word
+bind alt-left backward-token
+bind ctrl-left backward-word
+bind alt-right forward-token
+bind ctrl-right forward-word
+
 if status --is-interactive
 
     set fish_greeting
@@ -10,8 +19,8 @@ if status --is-interactive
         fup
         echo
         pull "$HOME/git-repos"
-        echo
-        spicetify upgrade
+        # echo
+        # spicetify upgrade
     end
 
     function pull
@@ -62,6 +71,10 @@ if status --is-interactive
         end
     end
 
+    function setgov
+        echo "$argv" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+    end
+
     alias v='nvim'
     alias fishconfig='nvim ~/.config/fish/config.fish'
     alias alacrittyconfig='nvim ~/.config/alacritty/alacritty.toml'
@@ -87,6 +100,8 @@ if status --is-interactive
 
     # git
     alias clone='cd ~/git-repos && git clone'
+
+    # alias diff='diff -ywi'
 
     # save rm
     alias rm='trash'

@@ -1,0 +1,94 @@
+@define-color bg #282828;
+@define-color fg #d4be98;
+@define-color fg2 #d3869b;
+@define-color inactive-border #453b2c;
+@define-color separator #555555;
+@define-color red #ea6962;
+@define-color green #a9b665;
+@define-color yellow #e78a4e;
+@define-color blue #7daea3;
+@define-color cyan #89b482;
+
+window:not(menu) {
+    font-family: Terminus;
+    font-size: 14px;
+    background: @bg;
+}
+
+#custom-qtile-groups {
+    letter-spacing: 2px;
+}
+
+#custom-qtile-window {
+    color: @cyan;
+    padding: 0px 8px 0px 6px;
+}
+
+#mpris {
+    color: @blue;
+    padding: 0px 5px 0px 5px;
+}
+
+#cpu {
+    color: @fg2;
+    padding: 0px 7px 0px 7px;
+}
+
+#memory {
+    color: @red;
+    padding: 0px 3px 0px 3px;
+}
+
+#custom-vram {
+    color: @green;
+    padding: 0px 7px 0px 7px;
+}
+
+#custom-uptime {
+    color: @yellow;
+    padding: 0px 3px 0px 3px;
+}
+
+#pulseaudio {
+    color: @blue;
+    padding: 0px 7px 0px 7px;
+}
+
+#tray {
+    padding: 0px 5px 0px 3px;
+}
+
+#custom-clock,
+#clock {
+    color: @cyan;
+    padding: 0px 3px 0px 3px;
+}
+
+#custom-spacer {
+    padding: 0px 0px 0px 0px;
+}
+
+.qtile-group,
+.qtile-group:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+    padding: 0px 5px 0px 5px;
+    margin-top: -1px;
+    min-width: 20px;
+    border-width: 0px;
+    border-radius: 0px;
+    color: @fg2;
+    background: @bg;
+}
+
+.qtile-primary,
+.qtile-primary:hover {
+    color: @bg;
+    background: @fg;
+}
+
+.qtile-secondary,
+.qtile-secondary:hover {
+    color: @bg;
+    background: @fg2;
+}

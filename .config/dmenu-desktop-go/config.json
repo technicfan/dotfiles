@@ -1,5 +1,5 @@
 {
-    "menu_command": "rofi -dmenu -i -p Run:",
+    "menu_command": "rofi -sync -dmenu -i -p Run:",
     "terminal_command": "kitty",
     "aliases": {
         "Steam": {
@@ -34,10 +34,10 @@
             "command": "/mnt/Games/games/Vintagestory/Vintagestory",
             "is_desktop": false
         },
-        "Prism Launcher": {
-            "command": "prismlauncher",
+        "Signal": {
+            "command": "signal-desktop --password-store=gnome-libsecret",
             "is_desktop": false
         }
     },
-    "excludes": []
+    "excludes": ["reManager"]
 }

@@ -1,0 +1,109 @@
+// -*- mode: jsonc -*-
+{
+    "height": 25, // Waybar height (to be removed for auto height)
+    "spacing": 4, // Gaps between modules (4px)
+    // "margin-top": -1,
+    // Choose the order of the modules
+    // "modules-left": ["custom/qtile-groups", "custom/qtile-window"],
+    "modules-left": ["cffi/qtile-groups", "custom/qtile-window"],
+    "modules-center": ["mpris"],
+    "modules-right": [
+        "cpu",
+        "memory",
+        "custom/vram",
+        "custom/uptime",
+        "pulseaudio",
+        "clock",
+        "group/tray",
+    ],
+    "exclusive": false,
+    // Modules configuration
+    "mpris": {
+        "player": "com",
+        "format": "<span text-transform=\"lowercase\">{title} - {artist}</span>",
+        "format-paused": "  <span text-transform=\"lowercase\">{title} - {artist}</span>",
+        "max-length": 45,
+        "tooltip": false,
+    },
+    "tray": {
+        "spacing": 10,
+        "show-passive-items": true,
+    },
+    "clock": {
+        "tooltip": false,
+        "on-click": "gsimplecal",
+        "locale": "de_DE.UTF-8",
+        "format": "<span text-transform=\"lowercase\">{:L%a %d. %B %H:%M}</span>",
+    },
+    "cpu": {
+        "interval": 1,
+        "format": "cpu: {usage}%",
+        "tooltip": false,
+    },
+    "memory": {
+        "interval": 1,
+        "format": "ram: {used:.2f}G",
+        "tooltip": false,
+    },
+    "pulseaudio": {
+        "scroll-step": 5,
+        "format": "vol: {volume}%",
+        "format-muted": "vol: M",
+        "tooltip": false,
+        "on-click": "~/.config/qtile/waybar/volume.py toggle",
+        "on-scroll-up": "~/.config/qtile/waybar/volume.py up",
+        "on-scroll-down": "~/.config/qtile/waybar/volume.py down",
+    },
+    "group/tray": {
+        "orientation": "inherit",
+        "modules": ["custom/spacer", "tray"],
+        "drawer": {
+            "click-to-reveal": true,
+            "transition-duration": 0,
+            "transition-left-to-right": false,
+        },
+    },
+    "custom/spacer": {
+        "format": "",
+        "tooltip": false,
+    },
+    "custom/clock": {
+        "tooltip": false,
+        "interval": 60,
+        "on-click": "gsimplecal",
+        "exec": "date '+%a %-d. %B %-H:%M'",
+        "format": "<span text-transform=\"lowercase\">{}</span>",
+    },
+    "custom/uptime": {
+        "format": "up: {}",
+        "interval": 60,
+        "exec": "uptime -p | sed -e 's/up //;s/,//g;s/ days\\?/d/;s/ hours\\?/h/;s/ minutes\\?/min/'",
+        "tooltip": false,
+    },
+    "custom/vram": {
+        "format": "vram: {}G",
+        "interval": 1,
+        "exec": "qalc -t \"round($(cat /sys/class/drm/card1/device/mem_info_vram_used) * 10^-9, 2)\"",
+        "tooltip": false,
+    },
+    "custom/qtile-groups": {
+        "format": "<span line_height=\"1.733\">{}</span>",
+        "return-type": "json",
+        "exec": "~/.config/qtile/waybar/compat_watcher.sh groups",
+        "on-scroll-up": "curl -s -X POST localhost:3001/cycle/backwards",
+        "on-scroll-down": "curl -s -X POST localhost:3001/cycle/forwards",
+    },
+    "custom/qtile-window": {
+        "max-length": 85,
+        "exec": "~/.config/qtile/waybar/compat_watcher.sh window",
+        "escape": true,
+        "tooltip": false,
+    },
+    "cffi/qtile-groups": {
+        "module_path": ".config/waybar/cffi/build/qtile-groups.so",
+        "actions": {
+            "on-scroll-up": "cycle backwards",
+            "on-scroll-down": "cycle forwards",
+        },
+    },
+}
