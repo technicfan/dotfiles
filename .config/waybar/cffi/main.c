@@ -38,6 +38,7 @@ static size_t write_response(void* contents, size_t size, size_t nmemb, string* 
     size_t new_len = response->len + size * nmemb;
     char* temp = realloc(response->val, new_len + 1);
     if (temp == NULL) return 0;
+    free(response->val);
     response->val = temp;
     memcpy(response->val + response->len, contents, size * nmemb);
     response->val[new_len] = '\0';
@@ -54,7 +55,7 @@ static void cycle(QtileGroups* inst, int forwards) {
     if (curl_easy_perform(curl) != CURLE_OK) {
         printf("Failed to cycle %s\n", forwards ? "forwards" : "backwards");
     }
-    curl_free(curl);
+    curl_easy_cleanup(curl);
     free(url);
 }
 
@@ -69,12 +70,14 @@ static void togroup(GtkButton* button, void* arg) {
     if (curl_easy_perform(curl) != CURLE_OK) {
         printf("Failed to switch to group %s\n", label);
     }
-    curl_free(curl);
+    curl_easy_cleanup(curl);
     free(url);
 }
 
 static gboolean update(gpointer data) {
     QtileGroups* inst = (QtileGroups*) data;
+    // idk...
+    if (inst->show_empty != 0 && inst->show_empty != 1) return G_SOURCE_REMOVE;
     CURL* curl = curl_easy_init();
     string* response = malloc(sizeof(string));
     response->len = 0;
@@ -131,7 +134,7 @@ static gboolean update(gpointer data) {
         printf("Failed to GET the groups\n");
     }
     gtk_widget_show_all(GTK_WIDGET(inst->groups));
-    curl_free(curl);
+    curl_easy_cleanup(curl);
     free(url);
     free(response->val);
     free(response);
@@ -210,7 +213,7 @@ void wbcffi_deinit(void* instance) {
     QtileGroups* inst = (QtileGroups*) instance;
     inst->stop = 1;
     FILE* file = fopen(inst->status_file, "r");
-    if (file) {
+    if (file != NULL) {
         fclose(file);
     }
     pthread_join(inst->thread, NULL);
@@ -221,7 +224,7 @@ void wbcffi_deinit(void* instance) {
 void wbcffi_refresh(void* instance, int signal) {
     QtileGroups* inst = (QtileGroups*) instance;
     if (signal == inst->signal) {
-        update(inst);
+        g_idle_add(update, inst);
     }
 }
 

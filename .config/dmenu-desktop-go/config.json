@@ -11,7 +11,7 @@
             "is_desktop": false
         },
         "Minecraft": {
-            "command": "/home/technicfan/Nextcloud/technicfan/Nextcloud/Linux/scripts/prism.sh",
+            "command": "Nextcloud/technicfan/Nextcloud/Linux/scripts/prism.sh",
             "is_desktop": false
         },
         "Roblox": {
@@ -20,10 +20,6 @@
         },
         "Wolfenstein 3D": {
             "command": "dosbox \"/mnt/Games/Heroic/Wolfenstein 3D/Wolf3d.exe\"",
-            "is_desktop": false
-        },
-        "Pamac": {
-            "command": "pamac-manager",
             "is_desktop": false
         },
         "Gimp": {
