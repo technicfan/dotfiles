@@ -148,7 +148,7 @@ void* update_watcher(void* arg) {
     char buf[BUF_LEN] __attribute__ ((aligned(8)));
     int inotify = inotify_init();
     if (inotify == -1 || inotify_add_watch(inotify, inst->status_file, IN_OPEN) == -1) {
-        printf("Failed to watch the <file>\n");
+        printf("Failed to watch %s\n", inst->status_file);
     }
 
     while (!inst->stop) {
@@ -190,7 +190,7 @@ void* wbcffi_init(const wbcffi_init_info* init_info, const wbcffi_config_entry* 
         char* home = getenv("HOME");
         if (home != NULL) {
             inst->status_file = malloc(strlen(home) + 36);
-            sprintf(inst->status_file, "%s/.config/qtile/waybar/status-change", home);
+            sprintf(inst->status_file, "%s/.config/qtile/waybar/group-change", home);
         }
     }
     if (inst->status_file == NULL) {
