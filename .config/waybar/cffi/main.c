@@ -24,9 +24,6 @@ typedef struct {
     int stop;
 } QtileGroups;
 
-// This static variable is shared between all instances of this module
-static int instance_count = 0;
-
 #define BUF_LEN (10 * (sizeof(struct inotify_event) + NAME_MAX + 1))
 
 typedef struct {
@@ -76,8 +73,6 @@ static void togroup(GtkButton* button, void* arg) {
 
 static gboolean update(gpointer data) {
     QtileGroups* inst = (QtileGroups*) data;
-    // idk...
-    if (inst->show_empty != 0 && inst->show_empty != 1) return G_SOURCE_REMOVE;
     CURL* curl = curl_easy_init();
     string* response = malloc(sizeof(string));
     response->len = 0;
@@ -92,6 +87,7 @@ static gboolean update(gpointer data) {
             gtk_container_remove(GTK_CONTAINER(inst->container), GTK_WIDGET(inst->groups));
         }
         inst->groups = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
+        gtk_widget_set_name(GTK_WIDGET(inst->groups), "qtile-groups");
         gtk_container_add(GTK_CONTAINER(inst->container), GTK_WIDGET(inst->groups));
         char group_name[strlen(response->val)];
         int primary = 0, secondary = 0, read_tag = 0, name_index = 0;
@@ -111,6 +107,7 @@ static gboolean update(gpointer data) {
             if (response->val[i] == ';') {
                 GtkButton* button = GTK_BUTTON(gtk_button_new_with_label(group_name));
                 g_signal_connect(button, "clicked", G_CALLBACK(togroup), inst);
+                gtk_widget_set_name(GTK_WIDGET(button), "qtile-groups");
                 GtkStyleContext* style = gtk_widget_get_style_context(GTK_WIDGET(button));
                 gtk_style_context_add_class(style, "qtile-group");
                 if (primary) {
@@ -153,7 +150,7 @@ void* update_watcher(void* arg) {
 
     while (!inst->stop) {
         if (read(inotify, buf, BUF_LEN) > 0) {
-            g_idle_add(update, inst);
+            update(inst);
         }
     }
     return NULL;
@@ -205,7 +202,6 @@ void* wbcffi_init(const wbcffi_init_info* init_info, const wbcffi_config_entry* 
     inst->stop = 0;
     pthread_create(&inst->thread, NULL, update_watcher, inst);
 
-    instance_count++;
     return inst;
 }
 
@@ -224,7 +220,7 @@ void wbcffi_deinit(void* instance) {
 void wbcffi_refresh(void* instance, int signal) {
     QtileGroups* inst = (QtileGroups*) instance;
     if (signal == inst->signal) {
-        g_idle_add(update, inst);
+        update(inst);
     }
 }
 
