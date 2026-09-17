@@ -150,7 +150,7 @@ void* update_watcher(void* arg) {
 
     while (!inst->stop) {
         if (read(inotify, buf, BUF_LEN) > 0) {
-            update(inst);
+            g_idle_add(update, inst);
         }
     }
     return NULL;
@@ -214,13 +214,14 @@ void wbcffi_deinit(void* instance) {
     }
     pthread_join(inst->thread, NULL);
     free(inst->status_file);
+    g_idle_remove_by_data(inst);
     free(instance);
 }
 
 void wbcffi_refresh(void* instance, int signal) {
     QtileGroups* inst = (QtileGroups*) instance;
     if (signal == inst->signal) {
-        update(inst);
+        g_idle_add(update, inst);
     }
 }
 
