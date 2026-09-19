@@ -19,7 +19,7 @@
     "exclusive": false,
     // Modules configuration
     "mpris": {
-        "player": "com",
+        "player": "qobine",
         "format": "<span text-transform=\"lowercase\">{title} - {artist}</span>",
         "format-paused": "  <span text-transform=\"lowercase\">{title} - {artist}</span>",
         "max-length": 45,
