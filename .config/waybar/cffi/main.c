@@ -16,6 +16,9 @@ typedef struct {
     wbcffi_module* waybar_module;
     GtkBox* container;
     GtkBox* groups;
+    int group_count;
+    int current_group;
+    char** group_names;
     int show_empty;
     int signal;
     const char* endpoint;
@@ -43,23 +46,8 @@ static size_t write_response(void* contents, size_t size, size_t nmemb, string* 
     return size * nmemb;
 }
 
-static void cycle(QtileGroups* inst, int forwards) {
+static void to_group(QtileGroups* inst, const char* label) {
     CURL* curl = curl_easy_init();
-    char* url = malloc(strlen(inst->endpoint) + (forwards ? 15 : 16));
-    sprintf(url, "%s/cycle/%s", inst->endpoint, forwards ? "forwards" : "backwards");
-    curl_easy_setopt(curl, CURLOPT_URL, url);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
-    if (curl_easy_perform(curl) != CURLE_OK) {
-        printf("Failed to cycle %s\n", forwards ? "forwards" : "backwards");
-    }
-    curl_easy_cleanup(curl);
-    free(url);
-}
-
-static void togroup(GtkButton* button, void* arg) {
-    QtileGroups* inst = (QtileGroups*) arg;
-    CURL* curl = curl_easy_init();
-    const char* label = gtk_button_get_label(button);
     char* url = malloc(strlen(label) + strlen(inst->endpoint) + 8);
     sprintf(url, "%s/switch/%s", inst->endpoint, label);
     curl_easy_setopt(curl, CURLOPT_URL, url);
@@ -71,70 +59,117 @@ static void togroup(GtkButton* button, void* arg) {
     free(url);
 }
 
-static gboolean update(gpointer data) {
-    QtileGroups* inst = (QtileGroups*) data;
+static char* get_groups(const char* endpoint, int show_empty) {
     CURL* curl = curl_easy_init();
     string* response = malloc(sizeof(string));
     response->len = 0;
     response->val = NULL;
-    char* url = malloc(strlen(inst->endpoint) + (inst->show_empty ? 12 : 13));
-    sprintf(url, "%s/groups/%s", inst->endpoint, inst->show_empty ? "true" : "false");
+    char* url = malloc(strlen(endpoint) + (show_empty ? 12 : 13));
+    sprintf(url, "%s/groups/%s", endpoint, show_empty ? "true" : "false");
     curl_easy_setopt(curl, CURLOPT_URL, url);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_response);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);
-    if (curl_easy_perform(curl) == CURLE_OK) {
+    int ok = curl_easy_perform(curl) == CURLE_OK;
+    char* result = response->val;
+    curl_easy_cleanup(curl);
+    free(url);
+    free(response);
+    if (ok) {
+        return result;
+    } else {
+        free(result);
+        return NULL;
+    }
+}
+
+static void cycle(QtileGroups* inst, int forwards) {
+    if (inst->group_count >= 2) {
+        int new_group = inst->current_group;
+        if (forwards) {
+            if (inst->current_group == inst->group_count - 1) {
+                new_group = 0;
+            } else {
+                new_group++;
+            }
+        } else {
+            if (inst->current_group == 0) {
+                new_group = inst->group_count - 1;
+            } else {
+                new_group--;
+            }
+        }
+        to_group(inst, inst->group_names[new_group]);
+    }
+}
+
+static void onclick(GtkButton* button, void* arg) {
+    to_group(arg, gtk_button_get_label(button));
+}
+
+static gboolean update(gpointer data) {
+    QtileGroups* inst = (QtileGroups*) data;
+    char* groups = get_groups(inst->endpoint, inst->show_empty);
+    if (groups) {
         if (inst->groups != NULL) {
             gtk_container_remove(GTK_CONTAINER(inst->container), GTK_WIDGET(inst->groups));
         }
         inst->groups = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
         gtk_widget_set_name(GTK_WIDGET(inst->groups), "qtile-groups");
         gtk_container_add(GTK_CONTAINER(inst->container), GTK_WIDGET(inst->groups));
-        char group_name[strlen(response->val)];
-        int primary = 0, secondary = 0, read_tag = 0, name_index = 0;
-        for (int i = 0; i < strlen(response->val); i++) {
+        for (int i = 0; i < inst->group_count; i++) {
+            free(inst->group_names[i]);
+        }
+        free(inst->group_names);
+        inst->group_names = NULL;
+        char group_name[strlen(groups)];
+        int primary = 0, secondary = 0, read_tag = 0, name_index = 0, counter = 0;
+        for (int i = 0; i < strlen(groups); i++) {
             if (read_tag) {
-                if (response->val[i] == 'p') {
+                if (groups[i] == 'p') {
                     primary = 1;
-                } else if (response->val[i] == 's') {
+                } else if (groups[i] == 's') {
                     secondary = 1;
-                } else if (response->val[i] == '>') {
+                } else if (groups[i] == '>') {
                     if (primary || secondary) {
                         read_tag = 0;
                     } 
                 }
                 continue;
             }
-            if (response->val[i] == ';') {
+            if (groups[i] == ';') {
                 GtkButton* button = GTK_BUTTON(gtk_button_new_with_label(group_name));
-                g_signal_connect(button, "clicked", G_CALLBACK(togroup), inst);
+                g_signal_connect(button, "clicked", G_CALLBACK(onclick), inst);
                 gtk_widget_set_name(GTK_WIDGET(button), "qtile-groups");
                 GtkStyleContext* style = gtk_widget_get_style_context(GTK_WIDGET(button));
                 gtk_style_context_add_class(style, "qtile-group");
                 if (primary) {
                     gtk_style_context_add_class(style, "qtile-primary");
+                    inst->current_group = counter;
                 } else if (secondary) {
                     gtk_style_context_add_class(style, "qtile-secondary");
                 }
                 gtk_container_add(GTK_CONTAINER(inst->groups), GTK_WIDGET(button));
+                inst->group_names = realloc(inst->group_names, (counter + 1) * sizeof(char*));
+                inst->group_names[counter] = malloc(strlen(group_name));
+                strcpy(inst->group_names[counter], group_name);
                 name_index = 0;
                 primary = 0;
                 secondary = 0;
-            } else if (response->val[i] == '<') {
+                counter++;
+            } else if (groups[i] == '<') {
                 read_tag = 1;
             } else {
-                group_name[name_index] = response->val[i];
+                group_name[name_index] = groups[i];
                 group_name[name_index + 1] = '\0';
                 name_index++;
             }
         }
+        inst->group_count = counter;
     } else {
         printf("Failed to GET the groups\n");
     }
     gtk_widget_show_all(GTK_WIDGET(inst->groups));
-    curl_easy_cleanup(curl);
-    free(url);
-    free(response->val);
-    free(response);
+    free(groups);
     return G_SOURCE_REMOVE;
 }
 
@@ -165,8 +200,11 @@ void* wbcffi_init(const wbcffi_init_info* init_info, const wbcffi_config_entry* 
     inst->container = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
     gtk_container_add(GTK_CONTAINER(root), GTK_WIDGET(inst->container));
     inst->groups = NULL;
+    inst->group_count = 0;
+    inst->current_group = 0;
+    inst->group_names = NULL;
 
-    inst->signal = 0;
+    inst->signal = -1;
     inst->show_empty = 0;
     inst->endpoint = NULL;
     inst->status_file = NULL;
@@ -214,7 +252,11 @@ void wbcffi_deinit(void* instance) {
     }
     pthread_join(inst->thread, NULL);
     free(inst->status_file);
-    g_idle_remove_by_data(inst);
+    for (int i = 0; i < inst->group_count; i++) {
+        free(inst->group_names[i]);
+    }
+    free(inst->group_names);
+    g_idle_remove_by_data(instance);
     free(instance);
 }
 
