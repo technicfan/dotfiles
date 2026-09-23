@@ -19,7 +19,7 @@
     "exclusive": false,
     // Modules configuration
     "mpris": {
-        "player": "qobine",
+        "player": "qbz",
         "format": "<span text-transform=\"lowercase\">{title} - {artist}</span>",
         "format-paused": "  <span text-transform=\"lowercase\">{title} - {artist}</span>",
         "max-length": 45,
@@ -95,7 +95,7 @@
     },
     "custom/qtile-window": {
         "max-length": 85,
-        "exec": "~/.config/qtile/waybar/compat_watcher.sh window",
+        "exec": "~/.config/waybar/modules/qtile-window",
         "escape": true,
         "tooltip": false,
     },

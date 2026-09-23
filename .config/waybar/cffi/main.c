@@ -1,16 +1,12 @@
 
-#include "glib-object.h"
 #include "glib.h"
 #include "gtk/gtk.h"
 #include "waybar_cffi_module.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdatomic.h>
-#include <sys/inotify.h>
-#include <pthread.h>
-#include <curl/curl.h>
-#include <unistd.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 
 typedef struct {
     wbcffi_module* waybar_module;
@@ -21,10 +17,11 @@ typedef struct {
     char** group_names;
     int show_empty;
     int signal;
-    const char* endpoint;
-    char* status_file;
     pthread_t thread;
     int stop;
+    int socket;
+    char* socket_file;
+    struct node* active_args_head;
 } QtileGroups;
 
 #define BUF_LEN (10 * (sizeof(struct inotify_event) + NAME_MAX + 1))
@@ -32,54 +29,87 @@ typedef struct {
 typedef struct {
     char* val;
     size_t len;
-} string;
+} data;
 
-static size_t write_response(void* contents, size_t size, size_t nmemb, string* response){
-    size_t new_len = response->len + size * nmemb;
-    char* temp = realloc(response->val, new_len + 1);
-    if (temp == NULL) return 0;
-    free(response->val);
-    response->val = temp;
-    memcpy(response->val + response->len, contents, size * nmemb);
-    response->val[new_len] = '\0';
-    response->len = new_len;
-    return size * nmemb;
+struct args {
+    QtileGroups* inst;
+    char* groups;
+};
+
+struct node {
+    struct args* val;
+    struct node* next;
+    struct node* previous;
+};
+
+static void add_arg(QtileGroups* inst, struct args* args) {
+    struct node* node = malloc(sizeof(struct node));
+    node->val = args;
+    if (inst->active_args_head->next == NULL) {
+        node->next = NULL;
+    } else {
+        node->next = inst->active_args_head->next;
+        node->next->previous = node;
+    }
+    inst->active_args_head->next = node;
+    node->previous = inst->active_args_head;
+}
+
+static void remove_arg(QtileGroups* inst, struct args* args) {
+    if (args == NULL) return;
+    struct node* current = inst->active_args_head->next;
+    while (current != NULL) {
+        if (current->val == args) {
+            current->previous->next = current->next;
+            if (current->next != NULL) {
+                current->next->previous = current->previous;
+            }
+            free(current);
+            break;
+        }
+        current = current->next;
+    }
+}
+
+static void clear_args(QtileGroups* inst) {
+    struct node* current = inst->active_args_head->next;
+    while (current != NULL) {
+        g_idle_remove_by_data(current->val);
+        current = current->next;
+        free(current);
+    }
 }
 
 static void to_group(QtileGroups* inst, const char* label) {
-    CURL* curl = curl_easy_init();
-    char* url = malloc(strlen(label) + strlen(inst->endpoint) + 8);
-    sprintf(url, "%s/switch/%s", inst->endpoint, label);
-    curl_easy_setopt(curl, CURLOPT_URL, url);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
-    if (curl_easy_perform(curl) != CURLE_OK) {
-        printf("Failed to switch to group %s\n", label);
-    }
-    curl_easy_cleanup(curl);
-    free(url);
+    int msg = 2;
+    send(inst->socket, &msg, sizeof(int), 0);
+    msg = strlen(label);
+    send(inst->socket, &msg, sizeof(int), 0);
+    send(inst->socket, label, msg, 0);
 }
 
-static char* get_groups(const char* endpoint, int show_empty) {
-    CURL* curl = curl_easy_init();
-    string* response = malloc(sizeof(string));
-    response->len = 0;
-    response->val = NULL;
-    char* url = malloc(strlen(endpoint) + (show_empty ? 12 : 13));
-    sprintf(url, "%s/groups/%s", endpoint, show_empty ? "true" : "false");
-    curl_easy_setopt(curl, CURLOPT_URL, url);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_response);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);
-    int ok = curl_easy_perform(curl) == CURLE_OK;
-    char* result = response->val;
-    curl_easy_cleanup(curl);
-    free(url);
-    free(response);
-    if (ok) {
+static char* get_groups(QtileGroups* inst) {
+    int msg = 1;
+    send(inst->socket, &msg, sizeof(int), 0);
+    msg = inst->show_empty;
+    send(inst->socket, &msg, sizeof(int), 0);
+    recv(inst->socket, &msg, sizeof(int), 0);
+    if (msg == 0) {
+        int size;
+        recv(inst->socket, &size, sizeof(int), 0);
+        char* result = malloc(size + 1);
+        recv(inst->socket, result, size, 0);
+        result[size] = '\0';
         return result;
     } else {
-        free(result);
         return NULL;
     }
+}
+
+static void request_update(int socket) {
+    int msg = 0;
+    send(socket, &msg, sizeof(int), 0);
+    send(socket, &msg, sizeof(int), 0);
 }
 
 static void cycle(QtileGroups* inst, int forwards) {
@@ -102,13 +132,13 @@ static void cycle(QtileGroups* inst, int forwards) {
     }
 }
 
-static void onclick(GtkButton* button, void* arg) {
-    to_group(arg, gtk_button_get_label(button));
+static void onclick(GtkButton* button, QtileGroups* inst) {
+    to_group(inst, gtk_button_get_label(button));
 }
 
-static gboolean update(gpointer data) {
-    QtileGroups* inst = (QtileGroups*) data;
-    char* groups = get_groups(inst->endpoint, inst->show_empty);
+static gboolean update(gpointer args) {
+    QtileGroups* inst = (QtileGroups*) ((struct args*) args)->inst;
+    char* groups = ((struct args*) args)->groups;
     if (groups) {
         if (inst->groups != NULL) {
             gtk_container_remove(GTK_CONTAINER(inst->container), GTK_WIDGET(inst->groups));
@@ -121,9 +151,8 @@ static gboolean update(gpointer data) {
         }
         free(inst->group_names);
         inst->group_names = NULL;
-        char group_name[strlen(groups)];
         int primary = 0, secondary = 0, read_tag = 0, name_index = 0, counter = 0;
-        for (int i = 0; i < strlen(groups); i++) {
+        for (int i = 0, len = strlen(groups); i < len; i++) {
             if (read_tag) {
                 if (groups[i] == 'p') {
                     primary = 1;
@@ -137,7 +166,8 @@ static gboolean update(gpointer data) {
                 continue;
             }
             if (groups[i] == ';') {
-                GtkButton* button = GTK_BUTTON(gtk_button_new_with_label(group_name));
+                groups[name_index] = '\0';
+                GtkButton* button = GTK_BUTTON(gtk_button_new_with_label(groups));
                 g_signal_connect(button, "clicked", G_CALLBACK(onclick), inst);
                 gtk_widget_set_name(GTK_WIDGET(button), "qtile-groups");
                 GtkStyleContext* style = gtk_widget_get_style_context(GTK_WIDGET(button));
@@ -150,8 +180,8 @@ static gboolean update(gpointer data) {
                 }
                 gtk_container_add(GTK_CONTAINER(inst->groups), GTK_WIDGET(button));
                 inst->group_names = realloc(inst->group_names, (counter + 1) * sizeof(char*));
-                inst->group_names[counter] = malloc(strlen(group_name));
-                strcpy(inst->group_names[counter], group_name);
+                inst->group_names[counter] = malloc(name_index + 1);
+                strncpy(inst->group_names[counter], groups, name_index + 1);
                 name_index = 0;
                 primary = 0;
                 secondary = 0;
@@ -159,8 +189,7 @@ static gboolean update(gpointer data) {
             } else if (groups[i] == '<') {
                 read_tag = 1;
             } else {
-                group_name[name_index] = groups[i];
-                group_name[name_index + 1] = '\0';
+                groups[name_index] = groups[i];
                 name_index++;
             }
         }
@@ -169,7 +198,9 @@ static gboolean update(gpointer data) {
         printf("Failed to GET the groups\n");
     }
     gtk_widget_show_all(GTK_WIDGET(inst->groups));
+    remove_arg(inst, args);
     free(groups);
+    free(args);
     return G_SOURCE_REMOVE;
 }
 
@@ -177,21 +208,47 @@ const size_t wbcffi_version = 2;
 
 void* update_watcher(void* arg) {
     QtileGroups* inst = (QtileGroups*) arg;
-    char buf[BUF_LEN] __attribute__ ((aligned(8)));
-    int inotify = inotify_init();
-    if (inotify == -1 || inotify_add_watch(inotify, inst->status_file, IN_OPEN) == -1) {
-        printf("Failed to watch %s\n", inst->status_file);
-    }
 
+    int msg;
     while (!inst->stop) {
-        if (read(inotify, buf, BUF_LEN) > 0) {
-            g_idle_add(update, inst);
+        if (read(inst->socket, &msg, sizeof(int)) > 0 && msg == 0) {
+            struct args* args = malloc(sizeof(struct args));
+            args->inst = inst;
+            args->groups = get_groups(inst);
+            add_arg(inst, args);
+            g_idle_add(update, args);
         }
     }
+
     return NULL;
 }
 
-void* wbcffi_init(const wbcffi_init_info* init_info, const wbcffi_config_entry* config_entries, size_t config_entries_len) {
+static void setup_socket(GtkButton* button, QtileGroups* inst) {
+    if (inst->socket_file == NULL) return;
+    inst->socket = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (inst->socket == -1) {
+        printf("Socket creation failed\n");
+        return;
+    }
+    struct sockaddr_un server;
+    server.sun_family = AF_UNIX;
+    strcpy(server.sun_path, inst->socket_file);
+    if (connect(inst->socket, (struct sockaddr*) &server, sizeof(server)) == -1) {
+        printf("Socket connection failed\n");
+        inst->socket = -1;
+        return;
+    }
+
+    request_update(inst->socket);
+    inst->stop = 0;
+    pthread_create(&inst->thread, NULL, update_watcher, inst);
+}
+
+void* wbcffi_init(
+    const wbcffi_init_info* init_info,
+    const wbcffi_config_entry* config_entries,
+    size_t config_entries_len
+) {
     QtileGroups* inst = malloc(sizeof(QtileGroups));
     inst->waybar_module = init_info->obj;
 
@@ -206,39 +263,48 @@ void* wbcffi_init(const wbcffi_init_info* init_info, const wbcffi_config_entry* 
 
     inst->signal = -1;
     inst->show_empty = 0;
-    inst->endpoint = NULL;
-    inst->status_file = NULL;
+    inst->socket_file = NULL;
     for (int i = 0; i < config_entries_len; i++) {
         wbcffi_config_entry entry = config_entries[i];
         if (!strcmp(entry.key, "show-empty") && !strcmp(entry.value, "true")) {
             inst->show_empty = 1;
         } else if (!strcmp(entry.key, "signal")) {
             inst->signal = atoi(entry.value);
-        } else if (!strcmp(entry.key, "status-file")) {
-            inst->status_file = malloc(strlen(entry.value));
-            strcpy(inst->status_file, entry.value);
-        } else if (!strcmp(entry.key, "endpoint")) {
-            inst->endpoint = entry.value;
+        } else if (!strcmp(entry.key, "socket")) {
+            inst->socket_file = malloc(strlen(entry.value) + 1);
+            strcpy(inst->socket_file, entry.value);
         }
     }
-    if (inst->status_file == NULL) {
+    if (inst->socket_file == NULL) {
         char* home = getenv("HOME");
         if (home != NULL) {
-            inst->status_file = malloc(strlen(home) + 36);
-            sprintf(inst->status_file, "%s/.config/qtile/waybar/group-change", home);
+            inst->socket_file = malloc(strlen(home) + 29);
+            sprintf(inst->socket_file, "%s/.config/qtile/waybar/socket", home);
+        } else {
+            printf("$HOME is not present\n");
         }
     }
-    if (inst->status_file == NULL) {
-        printf("Unable to set status-file\n");
-        inst->status_file = "";
-    }
-    if (inst->endpoint == NULL) {
-        inst->endpoint = "http://localhost:3001";
-    }
 
-    update(inst);
-    inst->stop = 0;
-    pthread_create(&inst->thread, NULL, update_watcher, inst);
+    inst->socket = -1;
+    setup_socket(NULL, inst);
+    inst->active_args_head = malloc(sizeof(struct node));
+    inst->active_args_head->next = NULL;
+    inst->active_args_head->previous = NULL;
+    inst->active_args_head->val = NULL;
+
+    if (inst->socket == -1) {
+        inst->groups = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
+        gtk_widget_set_name(GTK_WIDGET(inst->groups), "qtile-groups");
+        gtk_container_add(GTK_CONTAINER(inst->container), GTK_WIDGET(inst->groups));
+        GtkButton* button = GTK_BUTTON(
+            gtk_button_new_with_label("No socket connection (Click to retry)")
+        );
+        gtk_widget_set_name(GTK_WIDGET(button), "qtile-groups");
+        GtkStyleContext* style = gtk_widget_get_style_context(GTK_WIDGET(button));
+        gtk_style_context_add_class(style, "qtile-group");
+        gtk_container_add(GTK_CONTAINER(inst->groups), GTK_WIDGET(button));
+        g_signal_connect(button, "clicked", G_CALLBACK(setup_socket), inst);
+    }
 
     return inst;
 }
@@ -246,24 +312,24 @@ void* wbcffi_init(const wbcffi_init_info* init_info, const wbcffi_config_entry* 
 void wbcffi_deinit(void* instance) {
     QtileGroups* inst = (QtileGroups*) instance;
     inst->stop = 1;
-    FILE* file = fopen(inst->status_file, "r");
-    if (file != NULL) {
-        fclose(file);
+    if (inst->socket != -1) {
+        request_update(inst->socket);
+        pthread_join(inst->thread, NULL);
     }
-    pthread_join(inst->thread, NULL);
-    free(inst->status_file);
+    clear_args(inst);
     for (int i = 0; i < inst->group_count; i++) {
         free(inst->group_names[i]);
     }
     free(inst->group_names);
-    g_idle_remove_by_data(instance);
+    free(inst->socket_file);
+    close(inst->socket);
     free(instance);
 }
 
 void wbcffi_refresh(void* instance, int signal) {
     QtileGroups* inst = (QtileGroups*) instance;
     if (signal == inst->signal) {
-        g_idle_add(update, inst);
+        request_update(inst->socket);
     }
 }
 
