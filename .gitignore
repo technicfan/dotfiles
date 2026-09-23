@@ -6,3 +6,4 @@ app.lock
 app.log
 fish_prompt.fish
 ssh-config
+qtile-window
