@@ -24,8 +24,6 @@ typedef struct {
     struct node* active_args_head;
 } QtileGroups;
 
-#define BUF_LEN (10 * (sizeof(struct inotify_event) + NAME_MAX + 1))
-
 typedef struct {
     char* val;
     size_t len;

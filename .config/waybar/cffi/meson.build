@@ -7,8 +7,7 @@ project(
 shared_library('qtile-groups',
     ['main.c'],
     dependencies: [
-        dependency('gtk+-3.0', version : ['>=3.22.0']),
-        dependency('libcurl', version: ['>=0.8.22'])
+        dependency('gtk+-3.0', version : ['>=3.22.0'])
     ],
     name_prefix: ''
 )
