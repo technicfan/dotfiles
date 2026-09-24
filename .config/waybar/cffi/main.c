@@ -1,4 +1,3 @@
-
 #include "glib.h"
 #include "gtk/gtk.h"
 #include "waybar_cffi_module.h"
