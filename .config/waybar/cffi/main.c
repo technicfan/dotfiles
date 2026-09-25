@@ -65,6 +65,7 @@ static void remove_arg(QtileGroups* inst, struct args* args) {
                 current->next->previous = current->previous;
             }
             free(current);
+            free(args->groups);
             free(args);
             break;
         }
@@ -233,7 +234,6 @@ static gboolean update(gpointer args) {
         printf("Failed to get groups\n");
     }
     remove_arg(inst, args);
-    free(groups);
     return G_SOURCE_REMOVE;
 }
 
