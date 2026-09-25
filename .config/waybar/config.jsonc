@@ -2,9 +2,7 @@
 {
     "height": 25, // Waybar height (to be removed for auto height)
     "spacing": 4, // Gaps between modules (4px)
-    // "margin-top": -1,
     // Choose the order of the modules
-    // "modules-left": ["custom/qtile-groups", "custom/qtile-window"],
     "modules-left": ["cffi/qtile-groups", "custom/qtile-window"],
     "modules-center": ["mpris"],
     "modules-right": [
@@ -85,13 +83,6 @@
         "interval": 1,
         "exec": "qalc -t \"round($(cat /sys/class/drm/card1/device/mem_info_vram_used) * 10^-9, 2)\"",
         "tooltip": false,
-    },
-    "custom/qtile-groups": {
-        "format": "<span line_height=\"1.733\">{}</span>",
-        "return-type": "json",
-        "exec": "~/.config/qtile/waybar/compat_watcher.sh groups",
-        "on-scroll-up": "curl -s -X POST localhost:3001/cycle/backwards",
-        "on-scroll-down": "curl -s -X POST localhost:3001/cycle/forwards",
     },
     "custom/qtile-window": {
         "max-length": 85,

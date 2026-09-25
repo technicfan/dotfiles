@@ -68,8 +68,7 @@ window:not(menu) {
     padding: 0px 0px 0px 0px;
 }
 
-.qtile-group,
-.qtile-group:hover {
+#groups button {
     box-shadow: inherit;
     text-shadow: inherit;
     padding: 0px 5px 0px 5px;
@@ -77,18 +76,17 @@ window:not(menu) {
     min-width: 20px;
     border-width: 0px;
     border-radius: 0px;
+    transition-duration: 0ms;
     color: @fg2;
     background: @bg;
 }
 
-.qtile-primary,
-.qtile-primary:hover {
+#groups button.active {
     color: @bg;
     background: @fg;
 }
 
-.qtile-secondary,
-.qtile-secondary:hover {
+#groups button.visible {
     color: @bg;
     background: @fg2;
 }
