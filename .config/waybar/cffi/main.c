@@ -14,7 +14,8 @@ typedef struct {
     int group_count;
     int active_group;
     struct group** groups;
-    int show_empty;
+    int hide_empty;
+    int only_active;
     int signal;
     pthread_t thread;
     int stop;
@@ -115,11 +116,12 @@ static void request_update(int socket) {
 }
 
 static void cycle(QtileGroups* inst, int forwards) {
-    if (inst->group_count >= 2) {
+    if (inst->group_count >= 2 && !inst->only_active) {
         int counter = 0;
         int new_group = inst->active_group;
         while (counter == 0
-            || (inst->groups[new_group]->empty && counter <= inst->group_count)) {
+            || (inst->hide_empty && inst->groups[new_group]->empty
+                && counter <= inst->group_count)) {
             if (forwards) {
                 if (new_group == inst->group_count - 1) {
                     new_group = 0;
@@ -176,12 +178,10 @@ static gboolean update(gpointer args) {
                     group->active = 0;
                     group->visible = 0;
                     group->empty = 0;
-                    gtk_container_add(GTK_CONTAINER(inst->container), GTK_WIDGET(button));
                     inst->groups[counter] = group;
                 }
                 struct group* group = inst->groups[counter];
-                GtkButton* button = group->button;
-                GtkStyleContext* style = gtk_widget_get_style_context(GTK_WIDGET(button));
+                GtkStyleContext* style = gtk_widget_get_style_context(GTK_WIDGET(group->button));
                 if (active && !group->active) {
                     gtk_style_context_add_class(style, "active");
                     inst->active_group = counter;
@@ -191,9 +191,6 @@ static gboolean update(gpointer args) {
                 }
                 if (empty && !group->empty) {
                     gtk_style_context_add_class(style, "empty");
-                }
-                if (new) {
-                    gtk_style_context_add_class(style, group->label);
                 }
                 if (!active && group->active) {
                     gtk_style_context_remove_class(style, "active");
@@ -210,10 +207,14 @@ static gboolean update(gpointer args) {
                 group->active = active;
                 group->visible = visible;
                 group->empty = empty;
-                if (!inst->show_empty && group->empty) {
+                if ((inst->hide_empty && group->empty) || (inst->only_active && !group->active)) {
                     gtk_widget_hide(GTK_WIDGET(group->button));
                 } else {
                     gtk_widget_show(GTK_WIDGET(group->button));
+                }
+                if (new) {
+                    gtk_style_context_add_class(style, group->label);
+                    gtk_container_add(GTK_CONTAINER(inst->container), GTK_WIDGET(group->button));
                 }
                 name_index = 0;
                 active = 0;
@@ -295,12 +296,15 @@ void* wbcffi_init(
     inst->group_count = 0;
 
     inst->signal = -1;
-    inst->show_empty = 0;
+    inst->hide_empty = 0;
+    inst->only_active = 0;
     inst->socket_file = NULL;
     for (int i = 0; i < config_entries_len; i++) {
         wbcffi_config_entry entry = config_entries[i];
-        if (!strcmp(entry.key, "show-empty") && !strcmp(entry.value, "true\n")) {
-            inst->show_empty = 1;
+        if (!strcmp(entry.key, "hide-empty") && !strcmp(entry.value, "true\n")) {
+            inst->hide_empty = 1;
+        } else if (!strcmp(entry.key, "active-only") && !strcmp(entry.value, "true\n")) {
+            inst->only_active = 1;
         } else if (!strcmp(entry.key, "signal")) {
             inst->signal = atoi(entry.value);
         } else if (!strcmp(entry.key, "socket")) {

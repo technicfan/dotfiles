@@ -92,6 +92,7 @@
     },
     "cffi/qtile-groups": {
         "module_path": ".config/waybar/cffi/build/qtile-groups.so",
+        "hide-empty": true,
         "actions": {
             "on-scroll-up": "cycle backwards",
             "on-scroll-down": "cycle forwards",
