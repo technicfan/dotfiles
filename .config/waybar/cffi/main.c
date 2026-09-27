@@ -165,7 +165,7 @@ static gboolean update(gpointer args) {
             }
             if (groups[i] == ';') {
                 groups[name_index] = '\0';
-                int new = inst->group_count == 0;
+                int new = counter >= inst->group_count;
                 if (new) {
                     inst->groups
                         = realloc(inst->groups, (counter + 1) * sizeof(struct group*));
@@ -215,6 +215,12 @@ static gboolean update(gpointer args) {
                 if (new) {
                     gtk_style_context_add_class(style, group->label);
                     gtk_container_add(GTK_CONTAINER(inst->container), GTK_WIDGET(group->button));
+                } else if (strcmp(group->label, groups)) {
+                    gtk_style_context_remove_class(style, group->label);
+                    free(group->label);
+                    group->label = malloc(name_index + 1);
+                    strncpy(group->label, groups, name_index + 1);
+                    gtk_button_set_label(group->button, group->label);
                 }
                 name_index = 0;
                 active = 0;
@@ -228,9 +234,16 @@ static gboolean update(gpointer args) {
                 name_index++;
             }
         }
-        if (inst->group_count == 0) {
-            inst->group_count = counter;
+        if (counter < inst->group_count) {
+            for (int i = counter; i < inst->group_count; i++) {
+                gtk_container_remove(GTK_CONTAINER(inst->container),
+                                     GTK_WIDGET(inst->groups[i]->button));
+                free(inst->groups[i]->label);
+                free(inst->groups[i]);
+            }
+            inst->groups = realloc(inst->groups, counter * sizeof(struct group*));
         }
+        inst->group_count = counter;
     } else {
         printf("Failed to get groups\n");
     }
