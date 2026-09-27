@@ -12,19 +12,20 @@
         "custom/uptime",
         "pulseaudio",
         "clock",
-        "group/tray",
+        "group/gtray",
     ],
     "exclusive": false,
     // Modules configuration
     "mpris": {
         "player": "qbz",
         "format": "<span text-transform=\"lowercase\">{title} - {artist}</span>",
-        "format-paused": "  <span text-transform=\"lowercase\">{title} - {artist}</span>",
+        // "format-paused": "  <span text-transform=\"lowercase\">{title} - {artist}</span>",
         "max-length": 45,
         "tooltip": false,
     },
     "tray": {
         "spacing": 10,
+        "icon-size": 14,
         "show-passive-items": true,
     },
     "clock": {
@@ -52,7 +53,7 @@
         "on-scroll-up": "~/.config/qtile/waybar/volume.py up",
         "on-scroll-down": "~/.config/qtile/waybar/volume.py down",
     },
-    "group/tray": {
+    "group/gtray": {
         "orientation": "inherit",
         "modules": ["custom/spacer", "tray"],
         "drawer": {
@@ -62,7 +63,7 @@
         },
     },
     "custom/spacer": {
-        "format": "",
+        "format": " ",
         "tooltip": false,
     },
     "custom/clock": {
@@ -81,7 +82,7 @@
     "custom/vram": {
         "format": "vram: {}G",
         "interval": 1,
-        "exec": "qalc -t \"round($(cat /sys/class/drm/card1/device/mem_info_vram_used) * 10^-9, 2)\"",
+        "exec": "qalc -t \"round($(cat /sys/class/drm/card*/device/mem_info_vram_used) * 10^-9, 2)\"",
         "tooltip": false,
     },
     "custom/qtile-window": {
