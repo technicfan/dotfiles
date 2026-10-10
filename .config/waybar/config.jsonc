@@ -45,6 +45,11 @@
         "format": "{used:.2f}G",
         "tooltip": false,
     },
+    "battery": {
+        "format": "bat: {}%",
+        "interval": 60,
+        "tooltip": false,
+    },
     "pulseaudio": {
         "scroll-step": 5,
         "format": "vol: {volume}%",
