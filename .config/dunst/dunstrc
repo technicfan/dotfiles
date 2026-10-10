@@ -33,7 +33,7 @@
     origin = top-right
 
     # Offset from the origin
-    offset = (0, 25)
+    offset = (0, 26)
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -95,7 +95,7 @@
     frame_width = 1
 
     # Defines color of the frame around the notification window.
-    frame_color = "#dfbf8e"
+    frame_color = "#555555"
 
     # Size of gap to display between notifications - requires a compositor.
     # If value is greater than 0, separator_height will be ignored and a border
@@ -128,7 +128,7 @@
 
     ### Text ###
 
-    font = Terminus 12
+    font = JetBrainsMono Nerd Font 9
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -168,7 +168,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<b>%s</b>\n%b"
+    format = "%s\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -326,7 +326,7 @@
 
 [urgency_normal]
     background = "#282828"
-    foreground = "#d3869b"
+    foreground = "#dfbf8e"
     timeout = 5
     override_pause_level = 30
     # Icon for notifications with normal urgency, uncomment to enable
@@ -467,7 +467,7 @@
 [volume]
     appname = "qtile-volume"
     timeout = 1
-    highlight = "#dfbf8e"
+    highlight = "#808080"
 [launcher-error]
     appname = "l7-dmenu-desktop"
     timeout = 2

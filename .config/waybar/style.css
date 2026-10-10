@@ -3,12 +3,16 @@
  * ----------------------------------------------------- */
 
 /* @define-color bg #c0c0c0; */
+/* @define-color bg2 #cacaca; */
 /* @define-color fg #000000; */
+/* @define-color fg2 #282828; */
 /* @define-color shadow-dark #808080; */
 /* @define-color shadow-light #ffffff; */
 
 @define-color bg #282828;
+@define-color bg2 #303030;
 @define-color fg #d4be98;
+@define-color fg2 #808080;
 @define-color shadow-dark #000000;
 @define-color shadow-light #555555;
 
@@ -18,7 +22,7 @@
     border: none;
     border-radius: 0;
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 12px;
+    font-size: 13px;
     min-height: 0;
 }
 
@@ -65,6 +69,30 @@ menuitem,
     box-shadow: none;
 }
 
+menuitem:hover,
+menuitem:hover *:not(menuitem) {
+    background-color: @bg2;
+}
+
+menuitem:hover menu,
+menuitem:hover menuitem * {
+    background-color: @bg;
+}
+
+menuitem:hover menuitem:hover * {
+    background-color: @bg2;
+}
+
+menuitem:disabled * {
+    color: @fg2;
+}
+
+menuitem arrow,
+menuitem radio {
+    min-height: 16px;
+    min-width: 16px;
+}
+
 .modules-right,
 #mpris {
     margin: 3px 2px;
@@ -73,6 +101,11 @@ menuitem,
 .modules-right .module,
 #mpris {
     padding: 0 6px;
+}
+
+#cpu,
+#custom-gpu {
+    margin-right: -6px;
 }
 
 #clock {
@@ -86,6 +119,8 @@ menuitem,
 
 #custom-spacer {
     font-size: 10px;
-    margin-right: 2px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-right: 1px;
     padding: 0px 1px;
 }
